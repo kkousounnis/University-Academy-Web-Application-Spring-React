@@ -1,6 +1,6 @@
 # Coodle Univeristy Academy 
 
-## This project is about a Businesse to Customer (B2C) Web Application where the Businesse will be the University portal with Spcesializatoin In Computer Science which enrollerd students will use for their courses.
+### This project is about a Businesse to Customer (B2C) Web Application where the Businesse will be the University portal with Spcesializatoin In Computer Science which enrollerd students will use for their courses.
 
 
 #### Programming Languages: 
