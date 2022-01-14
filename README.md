@@ -13,22 +13,16 @@ The Web Application needs to hold in a database multiple courses along with the 
 
 Functionalities that needs to be implemented.
 
-1)A list of all the students.
+1)Dashboards with all the students and staff.
 
-2)A list of all the trainers.
+2)Dashboards with all the courses and their assignments.
 
-3)A list of all the assignments.
+3)Dashboard where every college student can see his courses and his assignments.
 
-4)A list of all the courses.
+4)3)Dashboard where every proffessor can see his students.
 
-5)All the students per course.
+5)System administrator dashboard.
 
-6)All the trainers per course.
-
-7)All the assignments per course.
-
-8)All the assignments per student.
-
-9)A list of students that belong to more than one courses.
+6)Signin SignUp features.
 
 10)User can give a date and it should output a list of students who need to submit one or more assignments on the same calendar week as the given date.
