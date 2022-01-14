@@ -81,6 +81,13 @@
     <build>
         <finalName>Coodle</finalName>
         <plugins>
+            <plugin> 
+                <groupId>org.springframework.boot</groupId> 
+                <artifactId>spring-boot-maven-plugin</artifactId> 
+                <configuration> 
+                    <mainClass>com.spring.boot.coodle.CoodleApplication</mainClass> 
+                </configuration> 
+            </plugin>
             <plugin>
 
                 <groupId>org.apache.maven.plugins</groupId>
