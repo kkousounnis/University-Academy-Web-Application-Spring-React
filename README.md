@@ -15,7 +15,7 @@ Functionalities that needs to be implemented.
 
 1)Dashboards with all the students and staff.
 
-2)Dashboards with all the courses and their assignments.
+2)Dashboards with all the courses which every course has only one assignment.
 
 3)Dashboard where every college student can see his courses and his assignments.
 
