@@ -9,6 +9,8 @@
   
 #### Technologies:Rest Api, JPA/HIBERNATE ORM
 
+![image](https://user-images.githubusercontent.com/39504405/151380222-88163e3a-04ff-443f-bda2-6c56de76775d.png)
+
 The Web Application needs to hold in a database multiple courses along with the enrolled students, the trainers that teach the subjects and the assignments that the students need to submit during the course duration.
 
 Functionalities that needs to be implemented.
