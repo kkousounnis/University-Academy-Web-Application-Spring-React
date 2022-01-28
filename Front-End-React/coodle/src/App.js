@@ -13,6 +13,8 @@ import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
+import myImage from "./assets/coodle_Logo.png";
+
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
 
@@ -62,10 +64,12 @@ class App extends Component {
 
     return (
       <Router>
+
+      
       <div className="container">
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
-            Coodle
+          <Link to={"/"} className="navbar-brand">            
+            <img src={myImage} class="rounded float-left" />
           </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
