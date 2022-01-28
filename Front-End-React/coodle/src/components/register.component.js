@@ -26,7 +26,17 @@ const email = value => {
   }
 };
 
-const vusername = value => {
+const vuserfirstname = value => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+
+const vuserlastname = value => {
   if (value.length < 3 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
@@ -50,23 +60,19 @@ export default class Register extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangeFirstName = this.onChangeFirstName.bind(this);
+    this.onChangeLastName = this.onChangeLastName.bind(this);
 
     this.state = {
-      username: "",
       email: "",
       password: "",
+      firstname: "",
+      lastname: "",
       successful: false,
       message: ""
     };
-  }
-
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    });
   }
 
   onChangeEmail(e) {
@@ -78,6 +84,18 @@ export default class Register extends Component {
   onChangePassword(e) {
     this.setState({
       password: e.target.value
+    });
+  }
+
+  onChangeFirstName(e) {
+    this.setState({
+      firstname: e.target.value
+    });
+  }
+
+  onChangeLastName(e) {
+    this.setState({
+      lastname: e.target.value
     });
   }
 
@@ -93,9 +111,10 @@ export default class Register extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.register(
-        this.state.username,
         this.state.email,
-        this.state.password
+        this.state.password,
+        this.state.firstname,
+        this.state.lastname
       ).then(
         response => {
           this.setState({
@@ -139,19 +158,7 @@ export default class Register extends Component {
             {!this.state.successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    validations={[required, vusername]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="Email">Email</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -171,6 +178,30 @@ export default class Register extends Component {
                     value={this.state.password}
                     onChange={this.onChangePassword}
                     validations={[required, vpassword]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="firstname">First Name</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="firstname"
+                    value={this.state.firstname}
+                    onChange={this.onChangeFirstName}
+                    validations={[required, vuserfirstname]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="lastname">Last Name</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="lastName"
+                    value={this.state.lastname}
+                    onChange={this.onChangeLastName}
+                    validations={[required, vuserlastname]}
                   />
                 </div>
 
