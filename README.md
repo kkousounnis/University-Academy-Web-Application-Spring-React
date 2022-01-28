@@ -2,6 +2,7 @@
 
 ### This project is about a Businesse to Customer (B2C) Web Application where the Businesse will be the University portal with Spcesializatoin In Computer Science which enrollerd students will use for their courses.
 
+![image](https://user-images.githubusercontent.com/39504405/151554962-d5023056-faa3-41d9-83fe-57d50f787442.png)
 
 #### Programming Languages: 
   **Back End:Java with Spring Boot FrameWork.**<br>
@@ -9,7 +10,6 @@
   
 #### Technologies:Rest Api, JPA/HIBERNATE ORM
 
-![image](https://user-images.githubusercontent.com/39504405/151554962-d5023056-faa3-41d9-83fe-57d50f787442.png)
 
 The Web Application needs to hold in a database multiple courses along with the enrolled students, the trainers that teach the subjects and the assignments that the students need to submit during the course duration.
 
