@@ -2,9 +2,9 @@
 
 ### This project is about a Businesse to Customer (B2C) Web Application where the Businesse will be the University portal with Spcesializatoin In Computer Science which enrollerd students will use for their courses.
 
-![image](https://user-images.githubusercontent.com/39504405/151565911-8eeae449-f421-45a2-9af0-b29ef729cf2f.png)
+![image](https://user-images.githubusercontent.com/39504405/152475535-7db2d43a-be20-4895-b764-6b397ea958b2.png)
 
-![image](https://user-images.githubusercontent.com/39504405/151554962-d5023056-faa3-41d9-83fe-57d50f787442.png)
+![image](https://user-images.githubusercontent.com/39504405/152475567-c502b951-cb71-4580-a696-fcb06739eb3f.png)
 
 #### Programming Languages: 
 
