@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -63,7 +63,7 @@ class App extends Component {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
 
     return (
-      <Router>
+      <BrowserRouter>
         <nav className="navbar navbar-expand navbar-dark bg-white">
           <Link to={"/"} className="navbar-brand ">
             <img src={myImage} class=" float-left" />
@@ -145,7 +145,7 @@ class App extends Component {
 
         { /*<AuthVerify logOut={this.logOut}/> */}
 
-      </Router>
+      </BrowserRouter>
     );
   }
 }
