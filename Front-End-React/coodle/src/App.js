@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import { withRouter } from 'react-router'
 
 import AuthService from "./services/auth.service";
 
@@ -131,16 +132,16 @@ class App extends Component {
         </nav>
 
         <div className="container mt-3">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/register" element={<Register />} />
-            <Route exact path="/profile" element={<Profile />} />
-            <Route path="/user" element={<BoardUser />} />
-            <Route path="/mod" element={<BoardModerator />} />
-            <Route path="/admin" element={<BoardAdmin />} />
-          </Routes>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/profile" component={Profile} />
+            <Route path="/user" component={BoardUser} />
+            <Route path="/mod" component={BoardModerator} />
+            <Route path="/admin" component={BoardAdmin} />
+          </Switch>
         </div>
 
         { /*<AuthVerify logOut={this.logOut}/> */}

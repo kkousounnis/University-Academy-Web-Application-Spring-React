@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Navigate } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 export default class Profile extends Component {
   constructor(props) {
+    console.log("3");
     super(props);
 
     this.state = {
@@ -22,7 +23,7 @@ export default class Profile extends Component {
 
   render() {
     if (this.state.navigate) {
-      return <Navigate to={this.state.navigate} />
+      return <Redirect to={this.state.navigate} />
     }
 
     const { currentUser } = this.state;
@@ -38,6 +39,7 @@ export default class Profile extends Component {
         </header>
         <p>
           <strong>Token:</strong>{" "}
+          
           {currentUser.accessToken.substring(0, 20)} ...{" "}
           {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
         </p>
