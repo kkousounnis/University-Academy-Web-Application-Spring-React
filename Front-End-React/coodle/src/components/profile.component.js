@@ -4,7 +4,6 @@ import AuthService from "../services/auth.service";
 
 export default class Profile extends Component {
   constructor(props) {
-    console.log("3");
     super(props);
 
     this.state = {

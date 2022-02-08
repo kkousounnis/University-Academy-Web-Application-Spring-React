@@ -17,7 +17,6 @@ const required = value => {
 
 export default class Login extends Component {  
   constructor(props) {
-    console.log("1");
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -53,11 +52,9 @@ export default class Login extends Component {
 
     this.form.validateAll();
 
-    if (this.checkBtn.context._errors.length === 0) {
-      console.log("2");
+    if (this.checkBtn.context._errors.length === 0) {      
       AuthService.login(this.state.username, this.state.password).then(
-        () => {
-          console.log("2");
+        () => {          
           this.props.history.push("/user");
           window.location.reload();
         },
