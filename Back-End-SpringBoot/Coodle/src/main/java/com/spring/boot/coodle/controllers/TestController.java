@@ -18,7 +18,6 @@ public class TestController {
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public String userAccess() {
-                System.err.print("Do we have passed this point!!!");
 		return "User Content.";
 	}
 
