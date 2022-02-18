@@ -65,6 +65,56 @@ class App extends Component {
 
     return (
       <BrowserRouter>
+
+        <div class=" d-flex flex-column flex-md-row align-items-center mb-1 border-bottom">
+          <div class="d-flex align-items-center text-dark text-decoration-none ">
+            <Link to={"/"} className="navbar-brand container justify-content" >
+              <img src={myImage} class=" float-left" />
+            </Link>
+          </div>
+
+          <nav class=" d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <div className="navbar-nav">
+              <li className="nav-item">
+                <Link to={"/home"} className="nav-link text-dark">
+                  Home
+                </Link>
+              </li>
+            </div>
+            <div className="navbar-nav">
+              {showModeratorBoard && (
+                <li className="nav-item">
+                  <Link to={"/mod"} className="nav-link text-dark">
+                    Moderator Board
+                  </Link>
+                </li>
+              )}
+
+              {showAdminBoard && (
+                <li className="nav-item">
+                  <Link to={"/admin"} className="nav-link text-dark">
+                    Admin Board
+                  </Link>
+                </li>
+              )}
+
+              {currentUser && (
+                <li className="nav-item me-3 py-2 text-dark text-decoration-none ">
+                  <Link to={"/user"} className="nav-link text-dark">
+                    User
+                  </Link>
+                </li>
+              )}
+            </div>
+
+
+            <a class="me-3 py-2 text-dark text-decoration-none" href="#">Enterprise</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
+            <a class="py-2 text-dark text-decoration-none" href="#">Pricing</a>
+
+          </nav>
+        </div>
+
         <nav className="navbar navbar-expand navbar-dark bg-white">
           <Link to={"/"} className="navbar-brand ">
             <img src={myImage} class=" float-left" />
