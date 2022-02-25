@@ -66,120 +66,82 @@ class App extends Component {
     return (
       <BrowserRouter>
 
-        <div class=" d-flex flex-column flex-md-row align-items-center mb-1 border-bottom">
+        <div class="navbar navbar d-flex flex-column flex-md-row align-items-center mb-1 border-bottom">
           <div class="d-flex align-items-center text-dark text-decoration-none ">
             <Link to={"/"} className="navbar-brand container justify-content" >
               <img src={myImage} class=" float-left" />
             </Link>
           </div>
 
-          <nav class=" d-inline-flex mt-2 mt-md-0 ms-md-auto">
-            <div className="navbar-nav">
-              <li className="nav-item">
+          <nav class=" d-inline-flex  ">
+            <div className=" mt-3 text-dark text-decoration-none ">
+              <a className="nav-item text-dark text-decoration-none ">
                 <Link to={"/home"} className="nav-link text-dark">
                   Home
                 </Link>
-              </li>
+              </a>
             </div>
-            <div className="navbar-nav">
+            <div className="mt-3 text-dark text-decoration-none">
               {showModeratorBoard && (
-                <li className="nav-item">
+                <a className="nav-item">
                   <Link to={"/mod"} className="nav-link text-dark">
                     Moderator Board
                   </Link>
-                </li>
+                </a>
               )}
 
               {showAdminBoard && (
-                <li className="nav-item">
+                <a className="nav-item">
                   <Link to={"/admin"} className="nav-link text-dark">
                     Admin Board
                   </Link>
-                </li>
+                </a>
               )}
 
               {currentUser && (
-                <li className="nav-item me-3 py-2 text-dark text-decoration-none ">
+                <a className="nav-item mt-3 text-dark text-decoration-none ">
                   <Link to={"/user"} className="nav-link text-dark">
                     User
                   </Link>
-                </li>
+                </a>
               )}
             </div>
-
-
-            <a class="me-3 py-2 text-dark text-decoration-none" href="#">Enterprise</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
-            <a class="py-2 text-dark text-decoration-none" href="#">Pricing</a>
+            {currentUser ? (
+              <div className="navbar navbar navbar-expand navbar-dark bg-white">
+                <ul class="navbar-nav">
+                  <li className="nav-item nav-link">
+                    <Link to={"/profile"} className="text-dark nav-link">
+                      {currentUser.email}
+                    </Link>
+                  </li>
+                  <li className="nav-item nav-link">
+                    <a href="/login" className="nav-link text-dark " onClick={this.logOut}>
+                      LogOut
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <div className="navbar navbar navbar-expand navbar-dark bg-white">
+                <ul class="navbar-nav">
+                  <li className="nav-item nav-link">
+                    <Link to={"/login"} className="nav-link text-dark">
+                      Login
+                    </Link>
+                  </li>
+                  <li className="nav-item nav-link">
+                    <Link to={"/register"} className="nav-link text-dark">
+                      Sign Up
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
 
           </nav>
         </div>
 
-        <nav className="navbar navbar-expand navbar-dark bg-white">
-          <Link to={"/"} className="navbar-brand ">
-            <img src={myImage} class=" float-left" />
-          </Link>
-          <div className="navbar-nav mr-auto ">
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link text-dark">
-                Home
-              </Link>
-            </li>
 
-            {showModeratorBoard && (
-              <li className="nav-item">
-                <Link to={"/mod"} className="nav-link text-dark">
-                  Moderator Board
-                </Link>
-              </li>
-            )}
-
-            {showAdminBoard && (
-              <li className="nav-item">
-                <Link to={"/admin"} className="nav-link text-dark">
-                  Admin Board
-                </Link>
-              </li>
-            )}
-
-            {currentUser && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link text-dark">
-                  User
-                </Link>
-              </li>
-            )}
-          </div>
-
-          {currentUser ? (
-            <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/profile"} className="nav-link text-dark">
-                  {currentUser.username}
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a href="/login" className="nav-link" onClick={this.logOut}>
-                  LogOut
-                </a>
-              </li>
-            </div>
-          ) : (
-            <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/login"} className="nav-link text-dark">
-                  Login
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link to={"/register"} className="nav-link text-dark">
-                  Sign Up
-                </Link>
-              </li>
-            </div>
-          )}
-        </nav>
 
         <div className="container mt-3">
           <Switch>
