@@ -39,5 +39,3 @@ Functionalities that needs to be implemented.
 10)User can give a date and it should output a list of students who need to submit one or more assignments on the same calendar week as the given date.
 
 
-=======
->>>>>>> Stashed changes
