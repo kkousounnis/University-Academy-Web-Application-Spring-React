@@ -25,13 +25,12 @@ The Web Application needs to hold in a database multiple courses along with the 
 
 Functionalities that needs to be implemented.
 
-1)Dashboards with all the students and staff.
-
-2)Dashboards with all the courses  and his assignment which every course has only one assignment and belongs to a semester one year in total like a master   2 semesters.
+1)Dashboards with all the courses  and his assignment which every course has only one assignment and belongs to a semester one year in total like a master   2 semesters.
 
 3)Dashboard where every proffessor can see his students.
 
 4)System administrator dashboard.(Thinking about the features)
+   -List of all the users
 
    -One fixed user as system administrator
   
