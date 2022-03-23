@@ -27,16 +27,18 @@ Functionalities that needs to be implemented.
 
 1)Dashboards with all the students and staff.
 
-2)Dashboards with all the courses which every course has only one assignment.
+2)Dashboards with all the courses  and his assignment which every course has only one assignment and belongs to a semester one year in total like a master   2 semesters.
 
-3)Dashboard where every college student can see his courses and his assignments.
+3)Dashboard where every proffessor can see his students.
 
-4)3)Dashboard where every proffessor can see his students.
+4)System administrator dashboard.(Thinking about the features)
+  -One fixed user as system administrator
+  -Delete users see a list of all users
+  -Make user as teacher after he creates his profile
 
-5)System administrator dashboard.
+5)Signin SignUp features.
 
-6)Signin SignUp features.
+6)User can give a date and it should output a list of students who need to submit one or more assignments for their courses.
 
-10)User can give a date and it should output a list of students who need to submit one or more assignments on the same calendar week as the given date.
-
+7)User can pay for the master whenever he wants
 
