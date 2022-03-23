@@ -1,0 +1,9 @@
+Roles user_id, role
+Users_Roles user_id, role_id
+Users id_user email,password, reset_password_token, fullname, date_of_birth
+Students id_user, tuitionfees 
+Trainers id_user, subbject
+StudentsPerCourse id_course, id_user, grade_for_course, status
+TrainersPerCourse id_user, id_course
+Courses id_course, title, semester, assignment,date_that_needs_to_be_submitted, price
+
