@@ -36,7 +36,7 @@ Functionalities that needs to be implemented.
   -Delete users see a list of all users
   -Make user as teacher after he creates his profile
 
-5)Signin SignUp features.
+5)Signin SignUp Reset Password features .
 
 6)User can give a date and it should output a list of students who need to submit one or more assignments for their courses.
 
