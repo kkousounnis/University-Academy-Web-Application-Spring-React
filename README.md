@@ -32,9 +32,12 @@ Functionalities that needs to be implemented.
 3)Dashboard where every proffessor can see his students.
 
 4)System administrator dashboard.(Thinking about the features)
-  -One fixed user as system administrator
-  -Delete users see a list of all users
-  -Make user as teacher after he creates his profile
+
+   -One fixed user as system administrator
+  
+   -Delete users see a list of all users
+  
+   -Make user as teacher after he creates his profile
 
 5)Signin SignUp Reset Password features .
 
