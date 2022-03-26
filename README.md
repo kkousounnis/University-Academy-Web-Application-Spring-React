@@ -42,4 +42,3 @@ Functionalities that needs to be implemented.
 6)User can give a date and it should output a list of students who need to submit one or more assignments for their courses.
 
 7)User can pay for the master whenever he wants
-
