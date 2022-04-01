@@ -1,6 +1,6 @@
 Roles user_id, role
 Users_Roles user_id, role_id
-Users id_user email,password, reset_password_token, first_name, last_name, date_of_birth
+Users id_user email,password, first_name, last_name, reset_password_token
 Students id_user, tuitionfees 
 Trainers id_user, subbject
 StudentsPerCourse id_course, id_user, grade_for_course, status
