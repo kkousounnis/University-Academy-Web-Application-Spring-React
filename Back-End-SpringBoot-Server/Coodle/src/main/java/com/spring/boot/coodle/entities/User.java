@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -16,13 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany; 
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size; 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -35,7 +34,7 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
-  
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -57,26 +56,16 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "last_name", nullable = false, length = 255)
     private String lastName;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_contact_numbers",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "contact_number_id", referencedColumnName = "id"))
-    @JsonIgnore
-    private Collection<ContactNumber> contactNumbers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    @JsonIgnore
-    private List<UserAddress> userAddressList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    @JsonIgnore
-    private List<Orders> ordersList;
-
+    
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();    
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Student student;
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
@@ -93,23 +82,14 @@ public class User implements Serializable {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-    }   
-    
+    }
+
     public User(Integer id, String email, String password, String firstName, String lastName) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public User(String firstName, String lastName, String email, String password, Set<Role> roles, Collection<ContactNumber> contactNumbers) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-        this.contactNumbers = contactNumbers;
     }
 
     public Integer getId() {
@@ -152,24 +132,6 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    @XmlTransient
-    public List<UserAddress> getUserAddressList() {
-        return userAddressList;
-    }
-
-    public void setUserAddressList(List<UserAddress> userAddressList) {
-        this.userAddressList = userAddressList;
-    }
-
-    @XmlTransient
-    public List<Orders> getOrdersList() {
-        return ordersList;
-    }
-
-    public void setOrdersList(List<Orders> ordersList) {
-        this.ordersList = ordersList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -190,20 +152,20 @@ public class User implements Serializable {
         return true;
     }
 
-    public Collection<ContactNumber> getContactNumbers() {
-        return contactNumbers;
-    }
-
-    public void setContactNumbers(Collection<ContactNumber> contactNumbers) {
-        this.contactNumbers = contactNumbers;
-    }
-
     public Collection<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     @Override
@@ -214,20 +176,9 @@ public class User implements Serializable {
         sb.append(", password=").append(password);
         sb.append(", firstName=").append(firstName);
         sb.append(", lastName=").append(lastName);
-        sb.append(", contactNumbers=").append(contactNumbers);
-        sb.append(", userAddressList=").append(userAddressList);
-        sb.append(", ordersList=").append(ordersList);
         sb.append(", roles=").append(roles);
         sb.append('}');
         return sb.toString();
-    }
-
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
     }
 
 }
