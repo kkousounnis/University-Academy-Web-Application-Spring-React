@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { withRouter } from 'react-router'
 
 import AuthService from "./services/auth.service";
 
@@ -14,13 +13,14 @@ import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import myImage from "./assets/coodle_Logo.png";
+import CoodleIcon from "./assets/coodle_Logo.png";
 
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
 
 class App extends Component {
   constructor(props) {
+    
     super(props);
     this.logOut = this.logOut.bind(this);
 
@@ -33,7 +33,7 @@ class App extends Component {
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-
+    
     if (user) {
       this.setState({
         currentUser: user,
@@ -68,19 +68,19 @@ class App extends Component {
 
         <div class="navbar navbar d-flex flex-column flex-md-row align-items-center mb-1 border-bottom">
           <div class="d-flex align-items-center text-dark text-decoration-none ">
-            <Link to={"/"} className="navbar-brand container justify-content" >
-              <img src={myImage} class=" float-left" />
-            </Link>
+            <div className="navbar-brand container justify-content" >
+              <img src={CoodleIcon} class=" float-left" />
+            </div>
           </div>
 
           <nav class=" d-inline-flex  ">
-            <div className=" mt-3 text-dark text-decoration-none ">
+            {!currentUser&& (<div className=" mt-3 texta-dark text-decoration-none ">
               <a className="nav-item text-dark text-decoration-none ">
                 <Link to={"/home"} className="nav-link text-dark">
                   Home
                 </Link>
               </a>
-            </div>
+            </div>)}
             <div className="mt-3 text-dark text-decoration-none">
               {showModeratorBoard && (
                 <a className="nav-item">
@@ -97,7 +97,7 @@ class App extends Component {
                   </Link>
                 </a>
               )}
-
+              
               {currentUser && (
                 <a className="nav-item mt-3 text-dark text-decoration-none ">
                   <Link to={"/user"} className="nav-link text-dark">
@@ -141,9 +141,7 @@ class App extends Component {
           </nav>
         </div>
 
-
-
-        <div className="container mt-3">
+        <div className="container ">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
@@ -155,6 +153,9 @@ class App extends Component {
             <Route path="/admin" component={BoardAdmin} />
           </Switch>
         </div>
+        <footer className="container text-center">
+          <p>&copy; 2021-2022 Coodle, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        </footer>
 
         { /*<AuthVerify logOut={this.logOut}/> */}
 
