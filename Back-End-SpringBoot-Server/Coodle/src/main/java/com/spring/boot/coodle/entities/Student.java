@@ -2,13 +2,18 @@
 package com.spring.boot.coodle.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -31,6 +36,12 @@ public class Student implements Serializable{
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "students_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Course> courses = new HashSet<>();  
 
     public Student() {
     }
