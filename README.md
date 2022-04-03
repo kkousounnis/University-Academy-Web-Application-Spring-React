@@ -5,7 +5,6 @@
 
 ![image](https://user-images.githubusercontent.com/39504405/161166547-90c87267-a555-48a4-8b1f-9c17bf52a3b0.png)
 
-
 #### Programming Languages: 
 
   **Back End:Java with Spring Boot FrameWork.**<br>
@@ -13,7 +12,6 @@
   **Front End: Javascript with React FrameWork.**<br>
   
 #### Technologies:Rest Api, JPA/HIBERNATE ORM
-
 
 The Web Application needs to hold in a database multiple courses along with the enrolled students, the trainers that teach the subjects and the assignments that the students need to submit during the course duration.
 
