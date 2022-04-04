@@ -66,6 +66,10 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Student student;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Trainer trainer;
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
