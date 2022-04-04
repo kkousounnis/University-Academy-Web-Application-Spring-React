@@ -54,6 +54,12 @@ public class Course {
         @JoinColumn(name = "student_id", referencedColumnName = "user_id", nullable = false)})
     @ManyToMany
     private List<Student> studentList;
+    
+    @JoinTable(name = "trainers_courses", joinColumns = {
+        @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "trainer_id", referencedColumnName = "user_id", nullable = false)})
+    @ManyToMany
+    private List<Trainer> trainerList;
 
     public Course() {
     }
