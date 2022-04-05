@@ -45,21 +45,67 @@ const vuserlastName = value => {
   }
 };
 
+//check if there is at least one uppercase.
+const uppercaseRegExp = /(?=.*?[A-Z])/;
+
+//check if there is at least one lowercase.
+const lowercaseRegExp = /(?=.*?[a-z])/;
+
+//check if there is at least one digit.
+const digitsRegExp = /(?=.*?[0-9])/;
+
+//check if there is at least one Special Characters.
+const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+
+//check if there is at least 8 characters.
+const minLengthRegExp = /.{8,}/;
+
 // using this variable in order to check with confirmation password field that they are the same
-var globalpassword;
+var globalPassword;
+
 const vpassword = value => {
-  globalpassword = value;
-  if (value.length < 6 || value.length > 40) {
+  globalPassword = value;
+  if (value.length < 8 || value.length > 40) {//check if value is more than 8 characters and less than 40.
     return (
       <div className="alert alert-danger" role="alert">
         The password must be between 6 and 40 characters.
+      </div>
+    );
+  } else if (!uppercaseRegExp.test(value)) {//check if there is at least one uppercase.
+    return (
+      <div className="alert alert-danger" role="alert">
+        Password must have at least one Uppercase.
+      </div>
+    );
+  } else if (!lowercaseRegExp.test(value)) {//check if there is at least one lowercase.
+    return (
+      <div className="alert alert-danger" role="alert">
+        Password must have at least one Lowercase.
+      </div>
+    );
+  } else if (!digitsRegExp.test(value)) {//check if there is at least one digit.
+    return (
+      <div className="alert alert-danger" role="alert">
+        Password must have at least one digit.
+      </div>
+    );
+  } else if (!specialCharRegExp.test(value)) {//check if there is at least one Special Characters.
+    return (
+      <div className="alert alert-danger" role="alert">
+        Password must have at least one Special Characters.
+      </div>
+    );
+  } else if (!minLengthRegExp.test(value)) {//check if there is at least 8 characters.
+    return (
+      <div className="alert alert-danger" role="alert">
+        Password must have at least minumum 8 characters.
       </div>
     );
   }
 };
 
 const vconfirmpassword = value => {
-  if (globalpassword !== value) {
+  if (globalPassword !== value) {
     return (
       <div className="alert alert-danger" role="alert">
         Passwords does not match.
