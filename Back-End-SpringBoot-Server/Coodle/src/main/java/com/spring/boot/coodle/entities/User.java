@@ -56,23 +56,24 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "last_name", nullable = false, length = 255)
     private String lastName;
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();      
-    
+    private Set<Role> roles = new HashSet<>();
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Student student;
-    
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Trainer trainer;
 
-    @Column(name = "reset_password_token")
-    private String resetPasswordToken;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private PasswordResetToken resetPasswordToken;
 
     public User() {
     }
@@ -164,11 +165,11 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public String getResetPasswordToken() {
+    public PasswordResetToken getResetPasswordToken() {
         return resetPasswordToken;
     }
 
-    public void setResetPasswordToken(String resetPasswordToken) {
+    public void setResetPasswordToken(PasswordResetToken resetPasswordToken) {
         this.resetPasswordToken = resetPasswordToken;
     }
 

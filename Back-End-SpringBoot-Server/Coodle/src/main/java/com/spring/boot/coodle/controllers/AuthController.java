@@ -11,6 +11,7 @@ import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
 import com.spring.boot.coodle.repository.RoleRepository;
 import com.spring.boot.coodle.repository.UserRepository;
 import com.spring.boot.coodle.services.UserDetailsImpl;
+import com.spring.boot.coodle.services.UserDetailsServiceImpl;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,8 +53,11 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    private UserDetailsServiceImpl userService;
+
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {        
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -116,5 +121,24 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(@Valid @RequestBody String email) {
+        String[] extractEmail = email.split("\"");
+        System.err.println("Do we pass this point email:"+ extractEmail[3]);
+        String response = userService.forgotPassword(extractEmail[3]);
+
+        if (!response.startsWith("Invalid")) {
+            response = "http://localhost:8080/api/resetPassword?token=" + response;
+        }
+        return (response);
+    }
+
+    @PutMapping("/resetPassword")
+    public String resetPassword(@RequestBody String token,
+            @RequestBody String password) {
+
+        return (userService.resetPassword(token, password));
     }
 }
