@@ -274,7 +274,7 @@ export default class Register extends Component {
                     name="firstName"
                     value={this.state.firstName}
                     onChange={this.onChangefirstName}
-                    validations={[required, vpassword, vuserfirstName]}
+                    validations={[required, vuserfirstName]}
                   />
                 </div>
 
