@@ -71,8 +71,9 @@ public class User implements Serializable {
     @PrimaryKeyJoinColumn
     private Trainer trainer;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(fetch = FetchType.LAZY, 
+           cascade = CascadeType.ALL,
+           mappedBy = "user")
     private PasswordResetToken resetPasswordToken;
 
     public User() {
@@ -137,6 +138,22 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public PasswordResetToken getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(PasswordResetToken resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -157,31 +174,18 @@ public class User implements Serializable {
         return true;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public PasswordResetToken getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(PasswordResetToken resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("User{id=").append(id);
+        sb.append("User{");
+        sb.append("id=").append(id);
         sb.append(", email=").append(email);
         sb.append(", password=").append(password);
         sb.append(", firstName=").append(firstName);
         sb.append(", lastName=").append(lastName);
         sb.append(", roles=").append(roles);
+        sb.append(", student=").append(student);
+        sb.append(", trainer=").append(trainer);
         sb.append('}');
         return sb.toString();
     }

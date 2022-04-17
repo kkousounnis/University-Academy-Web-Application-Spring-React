@@ -1,6 +1,7 @@
 package com.spring.boot.coodle.controllers;
 
 import com.spring.boot.coodle.config.security.jwt.JwtUtils;
+import com.spring.boot.coodle.dao.UserDaoImpl;
 import com.spring.boot.coodle.entities.ERole;
 import com.spring.boot.coodle.entities.Role;
 import com.spring.boot.coodle.entities.User;
@@ -8,6 +9,7 @@ import com.spring.boot.coodle.entities.dto.requests.LoginRequest;
 import com.spring.boot.coodle.entities.dto.requests.SignupRequest;
 import com.spring.boot.coodle.entities.dto.responses.JwtResponse;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
+import com.spring.boot.coodle.repository.PasswordResetRepository;
 import com.spring.boot.coodle.repository.RoleRepository;
 import com.spring.boot.coodle.repository.UserRepository;
 import com.spring.boot.coodle.services.UserDetailsImpl;
@@ -46,6 +48,9 @@ public class AuthController {
 
     @Autowired
     RoleRepository roleRepository;
+    
+    @Autowired
+    PasswordResetRepository passwordRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -77,7 +82,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
+        
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -119,6 +124,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
+        
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
@@ -126,7 +132,6 @@ public class AuthController {
     @PostMapping("/forgotPassword")
     public String forgotPassword(@Valid @RequestBody String email) {
         String[] extractEmail = email.split("\"");
-        System.err.println("Do we pass this point email:"+ extractEmail[3]);
         String response = userService.forgotPassword(extractEmail[3]);
 
         if (!response.startsWith("Invalid")) {

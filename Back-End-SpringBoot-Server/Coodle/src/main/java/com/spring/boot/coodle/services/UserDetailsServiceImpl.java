@@ -1,10 +1,10 @@
 package com.spring.boot.coodle.services;
 
+import com.spring.boot.coodle.dao.PasswordResetDao;
+import com.spring.boot.coodle.dao.UserDao;
 import com.spring.boot.coodle.entities.PasswordResetToken;
 import static com.spring.boot.coodle.entities.PasswordResetToken.EXPIRATION;
 import com.spring.boot.coodle.entities.User;
-import com.spring.boot.coodle.repository.PasswordResetRepository;
-import com.spring.boot.coodle.repository.UserRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -19,43 +19,46 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
-    
-    @Autowired
-    PasswordResetRepository passwordResetRepository;
+    PasswordResetDao passwordDao;
 
-    PasswordResetToken passwordResetToken;
+    @Autowired
+    UserDao userDao;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-
+        User user = userDao.findByEmail(username);
         return UserDetailsImpl.build(user);
     }
 
+    /**
+     * Forgot password method.
+     *
+     * @param email
+     * @return password reset token
+     */
     public String forgotPassword(String email) {
-        System.err.println("Before Null pointer why.");
-        System.err.println(userRepository.findByEmail(email)+"Null pointer why.");
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Invalid email id."));
-        
-        user.getResetPasswordToken().setToken(generateToken());
-        
-        passwordResetToken.setExpiryDate(LocalDateTime.now());
 
-        return (user.getResetPasswordToken()).getToken();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        User user = userDao.findByEmail(email);
+        passwordResetToken.setUser_id(user.getId());
+        passwordResetToken.setToken(generateToken());
+        passwordResetToken.setExpiryDate(LocalDateTime.now());
+        passwordResetToken.setUser(user);
+
+        //save updated entity in the database
+        passwordDao.save(passwordResetToken);
+        return (passwordResetToken.getToken());
     }
 
     public String resetPassword(String token, String email) {
-        
-        PasswordResetToken passwordResetToken = passwordResetRepository.findByToken(token)
-                .orElseThrow(() -> new UsernameNotFoundException("Invalid token."));
-        User user = userRepository.getById(passwordResetToken.getId());
-        
-        user.getResetPasswordToken().setToken(generateToken());
-        return (user.getResetPasswordToken()).getToken();
+
+        PasswordResetToken passwordResetToken = passwordDao.findByToken(token);
+        User user = userDao.findById(passwordResetToken.getId());
+        //To be implemented seconed step
+        //user.getResetPasswordToken().setToken(generateToken());
+        //return (user.getResetPasswordToken()).getToken();
+        return ("");
     }
 
     /**
