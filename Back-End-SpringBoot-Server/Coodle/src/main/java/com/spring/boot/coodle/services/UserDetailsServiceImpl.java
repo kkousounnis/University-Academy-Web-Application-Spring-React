@@ -7,6 +7,7 @@ import static com.spring.boot.coodle.entities.PasswordResetToken.EXPIRATION;
 import com.spring.boot.coodle.entities.User;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,13 +42,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         User user = userDao.findByEmail(email);
-        passwordResetToken.setUser_id(user.getId());
-        passwordResetToken.setToken(generateToken());
-        passwordResetToken.setExpiryDate(LocalDateTime.now());
-        passwordResetToken.setUser(user);
 
-        //save updated entity in the database
-        passwordDao.save(passwordResetToken);
+        //To be implemented check if its valid under 24 hours
+        List<PasswordResetToken> passwordResetTokens = passwordDao.findAllTokens();
+        if (!hasIdPasswordResetToken(passwordResetTokens, user.getId())) {
+
+            //here I create the new token to reset password.
+            passwordResetToken = setPasswordResetFields(passwordResetToken, user);
+            //save updated entity in the database
+            passwordDao.save(passwordResetToken);
+        } else {
+            //iterate the object password reset token.
+            passwordResetToken = iteratePasswordResetToken(passwordResetTokens, user.getId());
+
+            //check if its the token its valid token is valid only under 24 hours
+            if (isTokenExpired(passwordResetToken.getExpiryDate())) {
+
+                passwordResetToken = setPasswordResetFields(passwordResetToken, user);
+                passwordDao.update(passwordResetToken.getId(), passwordResetToken);
+            }
+        }
+
         return (passwordResetToken.getToken());
     }
 
@@ -84,8 +99,46 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         LocalDateTime now = LocalDateTime.now();
         Duration diff = Duration.between(tokenCreationDate, now);
-
-        return diff.toMinutes() >= EXPIRATION;
+        System.err.println("Difference to minutes:" + diff+">= Expiration:" + EXPIRATION + (diff.toMinutes() >= EXPIRATION));
+        return (diff.toMinutes() >= EXPIRATION);
 
     }
+
+    public PasswordResetToken setPasswordResetFields(PasswordResetToken passwordResetToken, User user) {
+        passwordResetToken.setUser_id(user.getId());
+        passwordResetToken.setToken(generateToken());
+        passwordResetToken.setExpiryDate(LocalDateTime.now());
+        passwordResetToken.setUser(user);
+        return (passwordResetToken);
+    }
+
+    /**
+     *
+     * @param user id of password reset token entity
+     * @return true | false if you find the given id.
+     */
+    public boolean hasIdPasswordResetToken(List<PasswordResetToken> passwordResetTokens, int id) {
+
+        for (PasswordResetToken pResetToken : passwordResetTokens) {
+            return (pResetToken.getUser_id() == id);
+        }
+        return (false);
+    }
+
+    /**
+     *
+     * @param passResetTokens
+     * @param id
+     * @return object password reset token.
+     */
+    public PasswordResetToken iteratePasswordResetToken(List<PasswordResetToken> passResetTokens, int id) {
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        for (PasswordResetToken passResetToken : passResetTokens) {
+            if (passResetToken.getUser_id() == id) {
+                passwordResetToken = passResetToken;
+            }
+        }
+        return (passwordResetToken);
+    }
+
 }
