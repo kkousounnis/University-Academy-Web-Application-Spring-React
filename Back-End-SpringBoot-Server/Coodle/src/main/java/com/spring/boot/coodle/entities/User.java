@@ -71,9 +71,9 @@ public class User implements Serializable {
     @PrimaryKeyJoinColumn
     private Trainer trainer;
 
-    @OneToOne(fetch = FetchType.LAZY, 
-           cascade = CascadeType.ALL,
-           mappedBy = "user")
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "user")
     private PasswordResetToken resetPasswordToken;
 
     public User() {
@@ -81,6 +81,10 @@ public class User implements Serializable {
 
     public User(Integer id) {
         this.id = id;
+    }
+
+    public User(String password) {
+        this.password = password;
     }
 
     public User(String email, String password, String firstName, String lastName) {
