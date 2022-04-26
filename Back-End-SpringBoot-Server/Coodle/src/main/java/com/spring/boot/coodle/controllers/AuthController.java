@@ -1,11 +1,12 @@
 package com.spring.boot.coodle.controllers;
 
 import com.spring.boot.coodle.config.security.jwt.JwtUtils;
-import com.spring.boot.coodle.dao.UserDaoImpl;
 import com.spring.boot.coodle.entities.ERole;
 import com.spring.boot.coodle.entities.Role;
 import com.spring.boot.coodle.entities.User;
+import com.spring.boot.coodle.entities.dto.requests.ForgotPasswordRequest;
 import com.spring.boot.coodle.entities.dto.requests.LoginRequest;
+import com.spring.boot.coodle.entities.dto.requests.ResetPasswordRequest;
 import com.spring.boot.coodle.entities.dto.requests.SignupRequest;
 import com.spring.boot.coodle.entities.dto.responses.JwtResponse;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
@@ -48,7 +49,7 @@ public class AuthController {
 
     @Autowired
     RoleRepository roleRepository;
-    
+
     @Autowired
     PasswordResetRepository passwordRepository;
 
@@ -82,7 +83,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        
+
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -124,26 +125,25 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        
+
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    @PostMapping("/forgotPassword")
-    public String forgotPassword(@Valid @RequestBody String email) {
-        String[] extractEmail = email.split("\"");
-        String response = userService.forgotPassword(extractEmail[3]);
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+
+        String response = userService.forgotPassword(forgotPasswordRequest.getEmail());
 
         if (!response.startsWith("Invalid")) {
-            response = "http://localhost:8080/api/resetPassword?token=" + response;
+            response = "http://localhost:8080/api/auth/reset-password?token=" + response;
         }
         return (response);
     }
 
-    @PutMapping("/resetPassword")
-    public String resetPassword(@RequestBody String token,
-            @RequestBody String password) {
-
-        return (userService.resetPassword(token, password));
+    @PutMapping("/reset-password")
+    public String resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return (userService.resetPassword(resetPasswordRequest.getToken(), encoder.encode(resetPasswordRequest.getPassword())));
     }
+    
 }
