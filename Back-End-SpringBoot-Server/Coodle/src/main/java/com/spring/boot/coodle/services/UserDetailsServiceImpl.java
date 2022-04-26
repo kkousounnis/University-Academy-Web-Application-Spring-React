@@ -66,14 +66,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return (passwordResetToken.getToken());
     }
 
-    public String resetPassword(String token, String email) {
+    public String resetPassword(String token, String password) {
 
-        PasswordResetToken passwordResetToken = passwordDao.findByToken(token);
-        User user = userDao.findById(passwordResetToken.getId());
-        //To be implemented seconed step
-        //user.getResetPasswordToken().setToken(generateToken());
-        //return (user.getResetPasswordToken()).getToken();
-        return ("");
+        User user = new User(password);
+        PasswordResetToken passwordResetToken = findByToken(token);
+
+        //updating in user entity the new password
+        userDao.update(passwordResetToken.getUser_id(), user);
+        //After I update the password I delete the used token
+        passwordDao.delete(passwordResetToken.getId());
+        return ("Yor password has been successfully reset.");
     }
 
     /**
@@ -99,7 +101,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         LocalDateTime now = LocalDateTime.now();
         Duration diff = Duration.between(tokenCreationDate, now);
-        System.err.println("Difference to minutes:" + diff+">= Expiration:" + EXPIRATION + (diff.toMinutes() >= EXPIRATION));
         return (diff.toMinutes() >= EXPIRATION);
 
     }
@@ -135,6 +136,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         for (PasswordResetToken passResetToken : passResetTokens) {
             if (passResetToken.getUser_id() == id) {
+                passwordResetToken = passResetToken;
+            }
+        }
+        return (passwordResetToken);
+    }
+
+    /**
+     *
+     * @param token
+     * @return PasswordResetToken
+     */
+    public PasswordResetToken findByToken(String token) {
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        for (PasswordResetToken passResetToken : passwordDao.findAllTokens()) {
+            if (passResetToken.getToken().equals(token)) {
                 passwordResetToken = passResetToken;
             }
         }
