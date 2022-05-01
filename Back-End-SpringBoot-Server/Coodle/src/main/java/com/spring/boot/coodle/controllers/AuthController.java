@@ -131,19 +131,22 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public String forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
 
         String response = userService.forgotPassword(forgotPasswordRequest.getEmail());
 
         if (!response.startsWith("Invalid")) {
             response = "http://localhost:8080/api/auth/reset-password?token=" + response;
         }
-        return (response);
+        return (ResponseEntity.ok(new MessageResponse(response)));
     }
 
     @PutMapping("/reset-password")
-    public String resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
-        return (userService.resetPassword(resetPasswordRequest.getToken(), encoder.encode(resetPasswordRequest.getPassword())));
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return (ResponseEntity.ok(
+                userService.resetPassword(
+                        resetPasswordRequest.getToken(),
+                        encoder.encode(resetPasswordRequest.getPassword()))));
     }
-    
+
 }
