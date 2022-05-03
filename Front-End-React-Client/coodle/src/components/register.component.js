@@ -15,7 +15,7 @@ const required = value => {
   }
 };
 
-const email = value => {
+const vemail = value => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
@@ -235,7 +235,7 @@ export default class Register extends Component {
                     name="email"
                     value={this.state.email}
                     onChange={this.onChangeEmail}
-                    validations={[required, email]}
+                    validations={[required, vemail]}
                   />
                 </div>
 

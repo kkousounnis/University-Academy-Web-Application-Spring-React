@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
+import { isEmail } from "validator";
 import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/auth.service";
@@ -16,48 +17,50 @@ const required = value => {
   }
 };
 
+const vemail = value => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
+
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
+    this.handleResetPassword = this.handleResetPassword.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
 
     this.state = {
-      username: "",
-      password: "",
+      email: "",
       loading: false,
       message: ""
     };
   }
 
-  onChangeUsername(e) {
+  onChangeEmail(e) {
     this.setState({
-      username: e.target.value
+      email: e.target.value
     });
   }
 
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value
-    });
-  }
-
-  handleLogin(e) {
+  handleResetPassword(e) {
     e.preventDefault();
 
     this.setState({
-      message: "",
-      loading: true
+      message: ""
     });
 
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
-        () => {
-          this.props.history.push("/user");
-          window.location.reload();
+    AuthService.resetPassword(
+      this.state.email
+      ).then(
+        response => {
+          this.setState({
+            message: response.data.message,
+            successful: true
+          });
         },
         error => {
           const resMessage =
@@ -68,16 +71,12 @@ export default class Login extends Component {
             error.toString();
 
           this.setState({
-            loading: false,
+            successful: false,
             message: resMessage
           });
         }
-      );
-    } else {
-      this.setState({
-        loading: false
-      });
-    }
+    )
+
   }
 
   render() {
@@ -91,40 +90,22 @@ export default class Login extends Component {
           />
 
           <Form
-            onSubmit={this.handleLogin}
+            onSubmit={this.handleResetPassword}
             ref={c => {
               this.form = c;
             }}
           >
             <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Input
+              <label htmlFor="username">Email</label>
+              <Input                
                 type="text"
-                placeHolder = "Email"
-                className="form-control"
+                className="form-control mt-2"
+                placeHolder = "Type you email to send the link"
                 name="username"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                validations={[required]}
+                value={this.state.email}
+                onChange={this.onChangeEmail}
+                validations={[required, vemail]}
               />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Input
-                type="password"
-                placeHolder = "Password"
-                className="form-control"
-                name="password"
-                value={this.state.password}
-                onChange={this.onChangePassword}
-                validations={[required]}
-              />
-            </div>
-            <div className="forgotPasswordButton">
-              <a href="/forgot-password">
-              Forgot password?
-              </a>
             </div>
             <div className="form-group mt-4">
               <button
@@ -134,7 +115,7 @@ export default class Login extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Login</span>
+                <span>Send</span>
               </button>
             </div>
 
