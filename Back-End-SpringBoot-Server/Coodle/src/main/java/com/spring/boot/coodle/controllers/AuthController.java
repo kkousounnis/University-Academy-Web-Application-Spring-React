@@ -15,15 +15,20 @@ import com.spring.boot.coodle.repository.RoleRepository;
 import com.spring.boot.coodle.repository.UserRepository;
 import com.spring.boot.coodle.services.UserDetailsImpl;
 import com.spring.boot.coodle.services.UserDetailsServiceImpl;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -60,10 +65,14 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
     private UserDetailsServiceImpl userService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        System.err.println(loginRequest.getUsername()+"-"+ loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -132,11 +141,19 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        String response = "";
+        String resetPasswordlink = userService.forgotPassword(forgotPasswordRequest.getEmail());
 
-        String response = userService.forgotPassword(forgotPasswordRequest.getEmail());
+        if (!resetPasswordlink.startsWith("Invalid")) {
 
-        if (!response.startsWith("Invalid")) {
-            response = "http://localhost:8080/api/auth/reset-password?token=" + response;
+            try {
+                response = "http://localhost:8080/api/auth/reset-password?token=" + resetPasswordlink;
+                sendEmail(forgotPasswordRequest.getEmail(), response);
+                response = "We have sent a reset password link to your email. Please check.";
+                return (ResponseEntity.ok(new MessageResponse(response)));
+            } catch (UnsupportedEncodingException | MessagingException e) {
+                return (ResponseEntity.badRequest().body("Error while sending email."));
+            }
         }
         return (ResponseEntity.ok(new MessageResponse(response)));
     }
@@ -147,6 +164,31 @@ public class AuthController {
                 userService.resetPassword(
                         resetPasswordRequest.getToken(),
                         encoder.encode(resetPasswordRequest.getPassword()))));
+    }
+
+    public void sendEmail(String recipientEmail, String link)
+            throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("coodle.masters@gmail.com", "Coodle Support");
+        helper.setTo(recipientEmail);
+
+        String subject = "Here's the link to reset your password";
+
+        String content = "<p>Hello,</p>"
+                + "<p>You have requested to reset your password.</p>"
+                + "<p>Click the link below to change your password:</p>"
+                + "<p><a href=\"" + link + "\">Change my password</a></p>"
+                + "<br>"
+                + "<p>Ignore this email if you do remember your password, "
+                + "or you have not made the request.</p>";
+
+        helper.setSubject(subject);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
     }
 
 }
