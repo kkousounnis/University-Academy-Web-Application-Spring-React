@@ -30,7 +30,7 @@ const vemail = value => {
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.handleResetPassword = this.handleResetPassword.bind(this);
+    this.handleForgotPassword = this.handleForgotPassword.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
 
     this.state = {
@@ -46,15 +46,19 @@ export default class Login extends Component {
     });
   }
 
-  handleResetPassword(e) {
+  handleForgotPassword(e) {
     e.preventDefault();
 
+    //this is important it forces all the checks for the fields
+    this.form.validateAll();
+
     this.setState({
+      loading: true,
       message: ""
     });
-
-    AuthService.resetPassword(
-      this.state.email
+    if (this.checkBtn.context._errors.length === 0) {
+      AuthService.forgotPassword(
+        this.state.email
       ).then(
         response => {
           this.setState({
@@ -75,7 +79,12 @@ export default class Login extends Component {
             message: resMessage
           });
         }
-    )
+      )
+    }else {
+      this.setState({
+        loading: false
+      });
+    }
 
   }
 
@@ -90,38 +99,45 @@ export default class Login extends Component {
           />
 
           <Form
-            onSubmit={this.handleResetPassword}
+            onSubmit={this.handleForgotPassword}
             ref={c => {
               this.form = c;
             }}
           >
-            <div className="form-group">
-              <label htmlFor="username">Email</label>
-              <Input                
-                type="text"
-                className="form-control mt-2"
-                placeHolder = "Type you email to send the link"
-                name="username"
-                value={this.state.email}
-                onChange={this.onChangeEmail}
-                validations={[required, vemail]}
-              />
-            </div>
-            <div className="form-group mt-4">
-              <button
-                className="btn btn-primary btn-block mybutton"
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Send</span>
-              </button>
-            </div>
+            {!this.state.message && (
+              <><div className="form-group">
+                <label htmlFor="username">Email</label>
+                <Input
+                  type="text"
+                  className="form-control mt-2"
+                  placeHolder="Type you email to send the link"
+                  name="username"
+                  value={this.state.email}
+                  onChange={this.onChangeEmail}
+                  validations={[required, vemail]} />
+              </div><div className="form-group mt-4">
+                  <button
+                    className="btn btn-primary btn-block mybutton"
+                    disabled={this.state.loading}
+                  >
+                    {this.state.loading && (
+                      <span className="spinner-border spinner-border-sm"></span>
+                    )}
+                    <span>Send</span>
+                  </button>
+                </div></>
+            )}
 
             {this.state.message && (
               <div className="form-group">
-                <div className="alert alert-danger" role="alert">
+                <div
+                  className={
+                    this.state.successful
+                      ? "alert alert-success"
+                      : "alert alert-danger"
+                  }
+                  role="alert"
+                >
                   {this.state.message}
                 </div>
               </div>

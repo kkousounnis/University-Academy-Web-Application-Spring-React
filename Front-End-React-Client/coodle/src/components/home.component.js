@@ -47,7 +47,7 @@ export default class Home extends Component {
 
           <div class="row">
             <div class="col mt-5">
-            <Link to={"/register"} class="btn btn-primary btn-lg mt-5 myloginbutton">
+            <Link to={"/register"} class="btn btn-primary btn-lg mt-5 mybutton">
               Join for free
                 </Link>
             </div>
