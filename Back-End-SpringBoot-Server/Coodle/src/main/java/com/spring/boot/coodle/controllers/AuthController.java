@@ -72,7 +72,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        System.err.println(loginRequest.getUsername()+"-"+ loginRequest.getPassword());
+        System.err.println(loginRequest.getUsername() + "-" + loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -145,9 +145,9 @@ public class AuthController {
         String resetPasswordlink = userService.forgotPassword(forgotPasswordRequest.getEmail());
 
         if (!resetPasswordlink.startsWith("Invalid")) {
-
+            
             try {
-                response = "http://localhost:8080/api/auth/reset-password?token=" + resetPasswordlink;
+                response = "http://localhost:3000/reset-password?token=" + resetPasswordlink;
                 sendEmail(forgotPasswordRequest.getEmail(), response);
                 response = "We have sent a reset password link to your email. Please check.";
                 return (ResponseEntity.ok(new MessageResponse(response)));
@@ -160,10 +160,12 @@ public class AuthController {
 
     @PutMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+
         return (ResponseEntity.ok(
-                userService.resetPassword(
-                        resetPasswordRequest.getToken(),
-                        encoder.encode(resetPasswordRequest.getPassword()))));
+                new MessageResponse(
+                        userService.resetPassword(
+                                resetPasswordRequest.getToken(),
+                                encoder.encode(resetPasswordRequest.getPassword())))));
     }
 
     public void sendEmail(String recipientEmail, String link)

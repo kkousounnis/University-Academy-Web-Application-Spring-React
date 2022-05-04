@@ -43,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         User user = userDao.findByEmail(email);
 
-        //To be implemented check if its valid under 24 hours
+        //check if its valid under 24 hours
         List<PasswordResetToken> passwordResetTokens = passwordDao.findAllTokens();
         if (!hasIdPasswordResetToken(passwordResetTokens, user.getId())) {
 
