@@ -36,7 +36,10 @@ Functionalities that needs to be implemented.
 6)User can give a date and it should output a list of students who need to submit one or more assignments for their courses.
 
 7)User can pay for the master whenever he wants
+
+
 Reset Password
+
 ![image](https://user-images.githubusercontent.com/39504405/166916877-9d27161a-fa3c-4ef8-80bf-a6c3bb2b1c98.png)
 ![image](https://user-images.githubusercontent.com/39504405/166916986-ff013ca5-8aa8-4aa1-a368-23a9e8c67b45.png)
 ![image](https://user-images.githubusercontent.com/39504405/166917193-01fe98d0-2205-48f8-a1df-bf275197c8f0.png)
