@@ -145,7 +145,7 @@ public class AuthController {
         String resetPasswordlink = userService.forgotPassword(forgotPasswordRequest.getEmail());
 
         if (!resetPasswordlink.startsWith("Invalid")) {
-            
+
             try {
                 response = "http://localhost:3000/reset-password?token=" + resetPasswordlink;
                 sendEmail(forgotPasswordRequest.getEmail(), response);
@@ -160,12 +160,16 @@ public class AuthController {
 
     @PutMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        String response = userService.resetPassword(
+                resetPasswordRequest.getToken(),
+                encoder.encode(resetPasswordRequest.getPassword()));
+        if (response.contains("success")) {
+            return (ResponseEntity.ok(new MessageResponse(response)));
+        } else if (response.contains("expired")) {
+            return (ResponseEntity.badRequest().body(new MessageResponse(response)));
+        }
+        return (ResponseEntity.badRequest().body(new MessageResponse(response)));
 
-        return (ResponseEntity.ok(
-                new MessageResponse(
-                        userService.resetPassword(
-                                resetPasswordRequest.getToken(),
-                                encoder.encode(resetPasswordRequest.getPassword())))));
     }
 
     public void sendEmail(String recipientEmail, String link)

@@ -24,6 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     UserDao userDao;
+    
+    static final String success = "Your password has been successfully reset.";
+    static final String tokenExpired = "The token is expired.";
+    static final String noToken = "The token does not exists.";
 
     @Override
     @Transactional
@@ -55,7 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             //iterate the object password reset token.
             passwordResetToken = iteratePasswordResetToken(passwordResetTokens, user.getId());
 
-            //check if its the token its valid token is valid only under 24 hours
+            //check if the token is valid. Token is valid only under 24 hours
             if (isTokenExpired(passwordResetToken.getExpiryDate())) {
 
                 passwordResetToken = setPasswordResetFields(passwordResetToken, user);
@@ -65,17 +69,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return (passwordResetToken.getToken());
     }
-
+    
     public String resetPassword(String token, String password) {
+        //check if its valid under 24 hours
+        List<PasswordResetToken> passwordResetTokens = passwordDao.findAllTokens();
+        if (null != findByToken(token).getToken()) {
+            User user = new User(password);
+            PasswordResetToken passwordResetToken = findByToken(token);
+            System.err.println(passwordResetToken.getId()+"Token= "
+                    +passwordResetToken.getToken());
+            
+            //check if the token is valid. Token is valid only under 24 hours
+            if (!isTokenExpired(passwordResetToken.getExpiryDate())) {
+                
+                //updating in user entity the new password
+                userDao.update(passwordResetToken.getUser_id(), user);
+                //After I update the password I delete the used token
+                passwordDao.delete(passwordResetToken.getId());
+                return (success);
+            } else {
+                return (tokenExpired);
+            }
 
-        User user = new User(password);
-        PasswordResetToken passwordResetToken = findByToken(token);
-
-        //updating in user entity the new password
-        userDao.update(passwordResetToken.getUser_id(), user);
-        //After I update the password I delete the used token
-        passwordDao.delete(passwordResetToken.getId());
-        return ("Yor password has been successfully reset.");
+        }
+        return (noToken);
     }
 
     /**
@@ -98,9 +115,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @return true or false
      */
     private boolean isTokenExpired(final LocalDateTime tokenCreationDate) {
-
+        
         LocalDateTime now = LocalDateTime.now();
         Duration diff = Duration.between(tokenCreationDate, now);
+        System.err.println("DIfference"+diff+">=Expiration: "+EXPIRATION +"="+(diff.toMinutes() >= EXPIRATION));
         return (diff.toMinutes() >= EXPIRATION);
 
     }
