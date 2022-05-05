@@ -38,12 +38,13 @@ Functionalities that needs to be implemented.
 7)User can pay for the master whenever he wants
 
 
-Reset Password
-
+Reset Password Feature
 ![image](https://user-images.githubusercontent.com/39504405/166916877-9d27161a-fa3c-4ef8-80bf-a6c3bb2b1c98.png)
+
 ![image](https://user-images.githubusercontent.com/39504405/166916986-ff013ca5-8aa8-4aa1-a368-23a9e8c67b45.png)
 ![image](https://user-images.githubusercontent.com/39504405/166917193-01fe98d0-2205-48f8-a1df-bf275197c8f0.png)
 ![image](https://user-images.githubusercontent.com/39504405/166917236-5f761263-2ee7-47c3-8281-d4cba5c81987.png)
 ![image](https://user-images.githubusercontent.com/39504405/166917303-0fa04c85-fce8-4001-b6ff-4e166984a6f5.png)
+
 
 
