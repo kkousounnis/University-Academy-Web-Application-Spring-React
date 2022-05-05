@@ -45,6 +45,7 @@ Reset Password Feature
 ![image](https://user-images.githubusercontent.com/39504405/166917193-01fe98d0-2205-48f8-a1df-bf275197c8f0.png)
 ![image](https://user-images.githubusercontent.com/39504405/166917236-5f761263-2ee7-47c3-8281-d4cba5c81987.png)
 ![image](https://user-images.githubusercontent.com/39504405/166917303-0fa04c85-fce8-4001-b6ff-4e166984a6f5.png)
+![image](https://user-images.githubusercontent.com/39504405/166917826-6e6f39f4-9296-4808-b2ef-78c62b4c6b36.png)
 
 
 
