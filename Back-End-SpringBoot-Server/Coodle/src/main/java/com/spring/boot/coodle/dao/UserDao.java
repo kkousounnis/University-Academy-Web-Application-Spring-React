@@ -8,6 +8,8 @@ public interface UserDao {
     public List<User> findAllUsers();
 
     public User findById(int id);
+    
+    public User findByEmail(String email);
 
     public User save(User user);
 

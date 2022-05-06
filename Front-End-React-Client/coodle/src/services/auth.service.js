@@ -31,8 +31,20 @@ class AuthService {
     });
   }
 
+  forgotPassword(email){
+    return axios.post( API_URL + "forgot-password", {
+        email
+    });
+  }
+
+  resetPassword(token, password){
+    return axios.put( API_URL + "reset-password", {
+        token,
+        password
+    });
+  }
+
   getCurrentUser() {
-    console.log(localStorage.getItem('user'));
     return JSON.parse(localStorage.getItem('user'));;
   }
 }
