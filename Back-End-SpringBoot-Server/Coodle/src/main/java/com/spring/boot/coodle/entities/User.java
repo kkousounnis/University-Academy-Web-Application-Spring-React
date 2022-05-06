@@ -56,29 +56,35 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "last_name", nullable = false, length = 255)
     private String lastName;
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();      
-    
+    private Set<Role> roles = new HashSet<>();
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Student student;
-    
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Trainer trainer;
 
-    @Column(name = "reset_password_token")
-    private String resetPasswordToken;
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "user")
+    private PasswordResetToken resetPasswordToken;
 
     public User() {
     }
 
     public User(Integer id) {
         this.id = id;
+    }
+
+    public User(String password) {
+        this.password = password;
     }
 
     public User(String email, String password, String firstName, String lastName) {
@@ -136,6 +142,22 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public PasswordResetToken getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(PasswordResetToken resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -156,31 +178,18 @@ public class User implements Serializable {
         return true;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("User{id=").append(id);
+        sb.append("User{");
+        sb.append("id=").append(id);
         sb.append(", email=").append(email);
         sb.append(", password=").append(password);
         sb.append(", firstName=").append(firstName);
         sb.append(", lastName=").append(lastName);
         sb.append(", roles=").append(roles);
+        sb.append(", student=").append(student);
+        sb.append(", trainer=").append(trainer);
         sb.append('}');
         return sb.toString();
     }

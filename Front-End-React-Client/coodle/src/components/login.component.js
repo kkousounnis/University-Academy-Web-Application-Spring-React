@@ -4,6 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/auth.service";
+import { Button } from "bootstrap";
 
 const required = value => {
   if (!value) {
@@ -15,7 +16,7 @@ const required = value => {
   }
 };
 
-export default class Login extends Component {  
+export default class Login extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
@@ -52,9 +53,9 @@ export default class Login extends Component {
 
     this.form.validateAll();
 
-    if (this.checkBtn.context._errors.length === 0) {      
+    if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
-        () => {          
+        () => {
           this.props.history.push("/user");
           window.location.reload();
         },
@@ -99,6 +100,7 @@ export default class Login extends Component {
               <label htmlFor="username">Username</label>
               <Input
                 type="text"
+                placeHolder = "Email"
                 className="form-control"
                 name="username"
                 value={this.state.username}
@@ -111,6 +113,7 @@ export default class Login extends Component {
               <label htmlFor="password">Password</label>
               <Input
                 type="password"
+                placeHolder = "Password"
                 className="form-control"
                 name="password"
                 value={this.state.password}
@@ -118,10 +121,14 @@ export default class Login extends Component {
                 validations={[required]}
               />
             </div>
-
-            <div className="form-group">
+            <div className="forgotPasswordButton">
+              <a href="/forgot-password">
+              Forgot password?
+              </a>
+            </div>
+            <div className="form-group mt-4">
               <button
-                className="btn btn-primary btn-block myloginbutton"
+                className="btn btn-primary btn-block mybutton"
                 disabled={this.state.loading}
               >
                 {this.state.loading && (

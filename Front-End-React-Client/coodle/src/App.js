@@ -6,6 +6,8 @@ import "./App.css";
 import AuthService from "./services/auth.service";
 
 import Login from "./components/login.component";
+import ResetPassword from "./components/reset-password.component";
+import ForgotPassword from "./components/forgot-password.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
@@ -128,7 +130,7 @@ class App extends Component {
                     <Link to={"/login"} className="nav-link text-dark">
                       Login
                     </Link>
-                  </li>
+                  </li>                  
                   <li className="nav-item nav-link">
                     <Link to={"/register"} className="nav-link text-dark">
                       Sign Up
@@ -146,6 +148,8 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/forgot-password" component={ForgotPassword} />
+            <Route exact path="/reset-password" component={ResetPassword} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
             <Route path="/user" component={BoardUser} />
