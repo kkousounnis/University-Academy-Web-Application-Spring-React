@@ -27,15 +27,15 @@ public class SignupRequest {
     private String email;
 
     @NotBlank
-    @Size(min = 6, max = 40)
+    @Size(min = 1, max = 255)
     private String password;
 
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 3, max = 20)
     private String firstName;
 
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 3, max = 20)
     private String lastName;
 
     private Set<String> role;
