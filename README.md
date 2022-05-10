@@ -10,7 +10,8 @@
   **Back End:Java with Spring Boot FrameWork.**<br>
 
   **Front End: Javascript with React FrameWork.**<br>
-  
+ 
+ 
 #### Technologies:Rest Api, JPA/HIBERNATE ORM
 
 The Web Application needs to hold in a database multiple courses along with the enrolled students, the trainers that teach the subjects and the assignments that the students need to submit during the course duration.
