@@ -60,16 +60,19 @@ export default class Login extends Component {
           window.location.reload();
         },
         error => {
+          
           const resMessage =
             (error.response &&
               error.response.data &&
               error.response.data.message) ||
             error.message ||
             error.toString();
-
+            
+            console.log(error.response.data);
           this.setState({
             loading: false,
-            message: resMessage
+            // message: resMessage
+            message: error.response.data
           });
         }
       );

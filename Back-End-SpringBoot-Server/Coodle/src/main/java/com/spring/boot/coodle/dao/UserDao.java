@@ -16,4 +16,6 @@ public interface UserDao {
     public void delete(int id);
 
     public User update(int id, User user);
+    
+    public boolean existsByEmail(String email);
 }

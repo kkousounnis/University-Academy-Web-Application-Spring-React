@@ -52,4 +52,10 @@ public class UserDaoImpl implements UserDao {
         return userRepository.save(myUser);
     }
 
+    @Override
+    public boolean existsByEmail(String username) {
+        
+        return userRepository.existsByEmail(username);
+    }
+
 }
