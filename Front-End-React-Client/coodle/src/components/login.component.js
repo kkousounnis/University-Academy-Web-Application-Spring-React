@@ -68,7 +68,6 @@ export default class Login extends Component {
             error.message ||
             error.toString();
             
-            console.log(error.response.data);
           this.setState({
             loading: false,
             // message: resMessage
