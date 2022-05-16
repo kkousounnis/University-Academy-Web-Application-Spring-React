@@ -32,6 +32,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -73,12 +74,10 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         //check if the user exists 
-        System.err.println("CHeck from here " + new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()).isAuthenticated());
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        if (authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
 
@@ -91,8 +90,13 @@ public class AuthController {
                     userDetails.getId(),
                     userDetails.getUsername(),
                     roles));
-        } else {
-            return (ResponseEntity.badRequest().body("Username or password are incorrect."));
+        } catch (AuthenticationException authenticationException) {
+            /**
+             *We catch the bad request that there is inside AuthenticationManager 
+             * because we did not had any body when there was no user
+            **/
+            return (ResponseEntity.badRequest()
+                    .body("Username or password are incorrect."));
         }
 
     }
