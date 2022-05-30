@@ -5,35 +5,31 @@ import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "passwordresettokens")
+@Table(name = "password_reset_tokens")
 public class PasswordResetToken implements Serializable {
 
     public static final int EXPIRATION = 60 * 24;
 
-        private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user_id;
 
     private String token;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private User user;
 
     private LocalDateTime expiryDate;
 
@@ -61,14 +57,6 @@ public class PasswordResetToken implements Serializable {
         this.id = Id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
     public String getToken() {
         return token;
     }
@@ -85,12 +73,12 @@ public class PasswordResetToken implements Serializable {
         this.expiryDate = expiryDate;
     }
 
-    public User getUser() {
-        return user;
+    public User getUser_id() {
+        return user_id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser_id(User user_id) {
+        this.user_id = user_id;
     }
 
     @Override
