@@ -5,9 +5,16 @@ CREATE DATABASE IF NOT EXISTS `coodle`;
 -- then insert the roles
 USE `coodle`;
 
-INSERT INTO roles(role) VALUES('ROLE_USER');
-INSERT INTO roles(role) VALUES('ROLE_MODERATOR');
-INSERT INTO roles(role) VALUES('ROLE_ADMIN');
+INSERT INTO `roles`(`role`) VALUES('ROLE_USER');
+INSERT INTO `roles`(`role`) VALUES('ROLE_MODERATOR');
+INSERT INTO `roles`(`role`) VALUES('ROLE_ADMIN');
+
+
+INSERT INTO `courses`(`semester`,`title`) VALUES('ALGORITHMS','A');
+INSERT INTO `courses`(`semester`,`title`) VALUES('ANALYSIS','A');
+INSERT INTO `courses`(`semester`,`title`) VALUES('PYTHON','B');
+INSERT INTO `courses`(`semester`,`title`) VALUES('DATABASES','B');
+INSERT INTO `courses`(`semester`,`title`) VALUES('MASTER_THESIS','B');
 
 -- ------------------------------------------------------
 -- CREATE DATABASE `coodle1`;
