@@ -10,7 +10,6 @@ import com.spring.boot.coodle.entities.dto.requests.ResetPasswordRequest;
 import com.spring.boot.coodle.entities.dto.requests.SignupRequest;
 import com.spring.boot.coodle.entities.dto.responses.JwtResponse;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
-import com.spring.boot.coodle.repository.PasswordResetRepository;
 import com.spring.boot.coodle.repository.RoleRepository;
 import com.spring.boot.coodle.repository.UserRepository;
 import com.spring.boot.coodle.services.UserDetailsImpl;
@@ -41,6 +40,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.spring.boot.coodle.repository.PasswordResetTokenRepository;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -57,7 +57,7 @@ public class AuthController {
     RoleRepository roleRepository;
 
     @Autowired
-    PasswordResetRepository passwordRepository;
+    PasswordResetTokenRepository passwordRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -207,5 +207,6 @@ public class AuthController {
 
         mailSender.send(message);
     }
+    
 
 }
