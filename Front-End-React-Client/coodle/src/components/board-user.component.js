@@ -4,9 +4,10 @@ import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 
 export default class BoardUser extends Component {
+
   constructor(props) {
     super(props);
-
+    this.state = { clients: [] };
     this.state = {
       content: ""
     };
@@ -18,6 +19,7 @@ export default class BoardUser extends Component {
         this.setState({
           content: response.data
         });
+        console.log("Foo "+this.state.content);
       },
       error => {
         this.setState({
@@ -37,10 +39,30 @@ export default class BoardUser extends Component {
   }
 
   render() {
+
     return (
       <div className="container">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
+          <table class="table table-light">
+            <thead>
+              <tr>
+                <th scope="col">Lessons</th>
+                <th scope="col">Passing Grade</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Price</th>
+                <th scope="col">Status Of Payment</th>
+                <th scope="col">Attended All Online Lessons</th>
+                <th scope="col">Assignment Status</th>
+                <th scope="col">Assignment Summary</th>
+                <th scope="col">Assignment Deadline date</th>
+                <th scope="col">To be implemented Pay the lesson</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
         </header>
       </div>
     );
