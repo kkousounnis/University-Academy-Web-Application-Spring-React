@@ -9,12 +9,12 @@ INSERT INTO `roles`(`role`) VALUES('ROLE_USER');
 INSERT INTO `roles`(`role`) VALUES('ROLE_MODERATOR');
 INSERT INTO `roles`(`role`) VALUES('ROLE_ADMIN');
 
-
-INSERT INTO `courses`(`semester`,`title`) VALUES('ALGORITHMS','A');
-INSERT INTO `courses`(`semester`,`title`) VALUES('ANALYSIS','A');
-INSERT INTO `courses`(`semester`,`title`) VALUES('PYTHON','B');
-INSERT INTO `courses`(`semester`,`title`) VALUES('DATABASES','B');
-INSERT INTO `courses`(`semester`,`title`) VALUES('MASTER_THESIS','B');
+use `coodle`;
+INSERT INTO `courses`(`title`,`semester`,`price`) VALUES('ALGORITHMS','A',250);
+INSERT INTO `courses`(`title`,`semester`,`price`) VALUES('ANALYSIS','A',250);
+INSERT INTO `courses`(`title`,`semester`,`price`) VALUES('PYTHON','B',200);
+INSERT INTO `courses`(`title`,`semester`,`price`) VALUES('DATABASES','B',200);
+INSERT INTO `courses`(`title`,`semester`,`price`) VALUES('MASTER_THESIS','B',400);
 
 -- ------------------------------------------------------
 -- CREATE DATABASE `coodle1`;
