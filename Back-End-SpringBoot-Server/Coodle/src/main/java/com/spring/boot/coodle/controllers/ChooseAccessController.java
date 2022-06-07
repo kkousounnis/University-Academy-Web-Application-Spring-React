@@ -1,6 +1,13 @@
 package com.spring.boot.coodle.controllers;
 
+import com.spring.boot.coodle.entities.Assignment;
+import com.spring.boot.coodle.entities.Course;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
+import com.spring.boot.coodle.entities.dto.responses.UserResponseTable;
+import com.spring.boot.coodle.services.UserDetailsServiceImpl;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,28 +19,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/choose-access")
 public class ChooseAccessController {
-	@GetMapping("/all")
-	public String allAccess() {
-		return "Learn without limits";
-	}
-	
-	@GetMapping("/user")
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> userAccess() {
-            
-                
-                return (ResponseEntity.ok(new MessageResponse("User Content.")));
-	}
 
-	@GetMapping("/mod")
-	@PreAuthorize("hasRole('MODERATOR')")
-	public String moderatorAccess() {
-		return "Moderator Board.";
-	}
+    @Autowired
+    private UserDetailsServiceImpl userService;
 
-	@GetMapping("/admin")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String adminAccess() {
-		return "Admin Board.";
-	}
+    @GetMapping("/all")
+    public String allAccess() {
+        return "Learn without limits";
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<?> userAccess() {
+
+//        List<Course> courses = new ArrayList<>();
+//        List<Assignment> assignments = new ArrayList<>();
+//        courses = userService.findAllCourses();
+//        assignments = userService.findAllAssignments();
+//        return (ResponseEntity.ok(new UserResponseTable(courses, assignments)));
+        return (ResponseEntity.ok(new MessageResponse("User Content.")));
+    }
+
+    @GetMapping("/mod")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public String moderatorAccess() {
+        return "Moderator Board.";
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminAccess() {
+        return "Admin Board.";
+    }
 }
