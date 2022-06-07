@@ -1,7 +1,11 @@
 package com.spring.boot.coodle.services;
 
+import com.spring.boot.coodle.dao.AssignmentDao;
+import com.spring.boot.coodle.dao.CourseDao;
 import com.spring.boot.coodle.dao.PasswordResetDao;
 import com.spring.boot.coodle.dao.UserDao;
+import com.spring.boot.coodle.entities.Assignment;
+import com.spring.boot.coodle.entities.Course;
 import com.spring.boot.coodle.entities.PasswordResetToken;
 import static com.spring.boot.coodle.entities.PasswordResetToken.EXPIRATION;
 import com.spring.boot.coodle.entities.User;
@@ -24,6 +28,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    CourseDao courseDao;
+
+    @Autowired
+    AssignmentDao assignmentDao;
 
     static final String success = "Your password has been successfully reset.";
     static final String tokenExpired = "The token is expired.";
@@ -87,7 +97,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 //After I update the password I delete the used token
                 passwordDao.delete(passwordResetToken.getId());
                 System.err.println(passwordResetToken.getId() + "Token= "
-                    + passwordResetToken.getToken());
+                        + passwordResetToken.getToken());
                 return (success);
             } else {
                 return (tokenExpired);
@@ -179,6 +189,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public boolean existsByEmail(String username) {
         return (userDao.existsByEmail(username));
+    }
+
+    public List<Course> findAllCourses() {
+        return (courseDao.findAllCourses());
+    }
+
+    public List<Assignment> findAllAssignments() {
+        return (assignmentDao.findAllAssignments());
     }
 
 }
