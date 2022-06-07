@@ -33,8 +33,9 @@ public class Course {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
+    @Enumerated(EnumType.STRING)
     @Column(name = "title", nullable = false, length = 255)
-    private String title;
+    private ECourseTitle title;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "semester", length = 255)
@@ -43,7 +44,7 @@ public class Course {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    @Column(name = "id_paid", columnDefinition = "boolean default false")
+    @Column(name = "is_paid", columnDefinition = "boolean default false")
     private Boolean isPaid;
 
     @Column(name = "has_attended_e_courses", columnDefinition = "boolean default false")
@@ -68,20 +69,16 @@ public class Course {
     public Course() {
     }
 
-    public Course(Integer id, String title, ESemester semester) {
+    public Course(Integer id,
+            ECourseTitle title, ESemester semester, Integer price,
+            Boolean isPaid, Boolean hasAttendedECourses, Assignment assignment) {
         this.id = id;
         this.title = title;
         this.semester = semester;
-    }
-
-    public Course(Integer id, String title, ESemester semester, Integer Price,
-            Boolean isPaid, Boolean hasAttendedECourses) {
-        this.id = id;
-        this.title = title;
-        this.semester = semester;
-        this.price = Price;
+        this.price = price;
         this.isPaid = isPaid;
         this.hasAttendedECourses = hasAttendedECourses;
+        this.assignment = assignment;
     }
 
     public Integer getId() {
@@ -92,11 +89,11 @@ public class Course {
         this.id = id;
     }
 
-    public String getTitle() {
+    public ECourseTitle getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(ECourseTitle title) {
         this.title = title;
     }
 
@@ -144,9 +141,12 @@ public class Course {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Course{");
-        sb.append("id=").append(id);
-        sb.append(", title=").append(title);
+        sb.append("title=").append(title);
         sb.append(", semester=").append(semester);
+        sb.append(", price=").append(price);
+        sb.append(", isPaid=").append(isPaid);
+        sb.append(", hasAttendedECourses=").append(hasAttendedECourses);
+        sb.append(", assignment=").append(assignment);
         sb.append('}');
         return sb.toString();
     }

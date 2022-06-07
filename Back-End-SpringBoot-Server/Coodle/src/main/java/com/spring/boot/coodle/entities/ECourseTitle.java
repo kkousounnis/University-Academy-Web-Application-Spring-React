@@ -1,6 +1,6 @@
 package com.spring.boot.coodle.entities;
 
-public enum ECourse {
+public enum ECourseTitle {
     ALGORITHMS,
     ANALYSIS,
     PYTHON,
