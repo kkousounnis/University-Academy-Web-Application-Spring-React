@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#Command to make script universal in linux command line is -> export PATH=$PATH:~/local/bin/runCoodleSpringServicev1
+#Change to your home directory
+cd $home
+
+#Run war project 
+cd  Github/Coodle/University-Academy-Web-Application-Spring-React/Front-End-React-Client/Coodle
+npm start

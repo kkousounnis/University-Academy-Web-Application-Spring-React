@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.spring.boot.coodle.repository.PasswordResetTokenRepository;
+import org.springframework.http.HttpStatus;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -147,6 +148,8 @@ public class AuthController {
         user.setRoles(roles);
 
         userRepository.save(user);
+        //to be checked and implemented
+//        return new ResponseEntity<MessageResponse>(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 

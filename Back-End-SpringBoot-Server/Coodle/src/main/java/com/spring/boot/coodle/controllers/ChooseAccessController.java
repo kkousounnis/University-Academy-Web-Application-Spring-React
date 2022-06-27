@@ -32,12 +32,11 @@ public class ChooseAccessController {
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> userAccess() {
 
-//        List<Course> courses = new ArrayList<>();
-//        List<Assignment> assignments = new ArrayList<>();
-//        courses = userService.findAllCourses();
-//        assignments = userService.findAllAssignments();
-//        return (ResponseEntity.ok(new UserResponseTable(courses, assignments)));
-        return (ResponseEntity.ok(new MessageResponse("User Content.")));
+        List<Course> courses = new ArrayList<>();
+        List<Assignment> assignments = new ArrayList<>();
+        courses = userService.findAllCourses();
+        assignments = userService.findAllAssignments();
+        return (ResponseEntity.ok(new UserResponseTable(courses, assignments)));
     }
 
     @GetMapping("/mod")
