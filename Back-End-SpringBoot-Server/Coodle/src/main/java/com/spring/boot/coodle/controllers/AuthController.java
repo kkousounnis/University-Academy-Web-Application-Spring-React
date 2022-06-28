@@ -86,27 +86,25 @@ public class AuthController {
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
-
-            return ResponseEntity.ok(new JwtResponse(jwt,
-                    userDetails.getId(),
-                    userDetails.getUsername(),
-                    roles));
+            return new ResponseEntity(new JwtResponse(jwt,
+                    userDetails.getId(), userDetails.getUsername(), roles), HttpStatus.OK);
         } catch (AuthenticationException authenticationException) {
             /**
-             *We catch the bad request that there is inside AuthenticationManager 
-             * because we did not had any body when there was no user
-            **/
-            return (ResponseEntity.badRequest()
-                    .body("Username or password are incorrect."));
+             * We catch the bad request that there is inside
+             * AuthenticationManager because we did not had any body when there
+             * was no user
+             *
+             */
+            return new ResponseEntity("Username or password are incorrect.", HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-         System.err.println("Check from here");
-        System.err.println("Check from here"+ signUpRequest);
-        
+        System.err.println("Check from here");
+        System.err.println("Check from here" + signUpRequest);
+
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -148,9 +146,9 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        System.err.println("Check from here"+ user);
+        System.err.println("Check from here" + user);
         userRepository.save(user);
-        return new ResponseEntity(new MessageResponse("User registered successfully!"),HttpStatus.CREATED);
+        return new ResponseEntity(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
     }
 
     @PostMapping("/forgot-password")
@@ -164,13 +162,14 @@ public class AuthController {
                 response = "http://localhost:3000/reset-password?token=" + resetPasswordlink;
                 sendEmail(forgotPasswordRequest.getEmail(), response);
                 response = "We have sent a reset password link to your email. Please check.";
-                
-                return (ResponseEntity.ok(new MessageResponse(response)));
+
+                return new ResponseEntity(new MessageResponse(response), HttpStatus.CREATED);
+
             } catch (UnsupportedEncodingException | MessagingException e) {
-                return (ResponseEntity.badRequest().body("Error while sending email."));
+                return new ResponseEntity("Error while sending email.", HttpStatus.BAD_REQUEST);
             }
         }
-        return (ResponseEntity.ok(new MessageResponse(response)));
+        return new ResponseEntity(new MessageResponse(response), HttpStatus.OK);
     }
 
     @PutMapping("/reset-password")
@@ -179,11 +178,11 @@ public class AuthController {
                 resetPasswordRequest.getToken(),
                 encoder.encode(resetPasswordRequest.getPassword()));
         if (response.contains("success")) {
-            return (ResponseEntity.ok(new MessageResponse(response)));
+            return new ResponseEntity(new MessageResponse(response), HttpStatus.OK);
         } else if (response.contains("expired")) {
-            return (ResponseEntity.badRequest().body(new MessageResponse(response)));
+            return new ResponseEntity(new MessageResponse(response), HttpStatus.BAD_REQUEST);
         }
-        return (ResponseEntity.badRequest().body(new MessageResponse(response)));
+        return new ResponseEntity(new MessageResponse(response), HttpStatus.BAD_REQUEST);
 
     }
 
@@ -211,6 +210,5 @@ public class AuthController {
 
         mailSender.send(message);
     }
-    
 
 }
