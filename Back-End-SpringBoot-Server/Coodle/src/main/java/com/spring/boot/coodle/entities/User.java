@@ -1,7 +1,6 @@
 package com.spring.boot.coodle.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.spring.boot.coodle.constraints.ValidPassword;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,11 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -73,10 +72,10 @@ public class User implements Serializable {
     @PrimaryKeyJoinColumn
     private Trainer trainer;
 
-    @OneToOne(fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
-            mappedBy = "user")
-    private PasswordResetToken resetPasswordToken;
+            mappedBy = "user_id")
+    private Set<PasswordResetToken> resetPasswordToken;
 
     public User() {
     }
@@ -144,11 +143,11 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public PasswordResetToken getResetPasswordToken() {
+    public Set<PasswordResetToken> getResetPasswordToken() {
         return resetPasswordToken;
     }
 
-    public void setResetPasswordToken(PasswordResetToken resetPasswordToken) {
+    public void setResetPasswordToken(Set<PasswordResetToken> resetPasswordToken) {
         this.resetPasswordToken = resetPasswordToken;
     }
 
@@ -195,5 +194,7 @@ public class User implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    
 
 }

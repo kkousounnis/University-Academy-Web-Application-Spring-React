@@ -1,7 +1,11 @@
 package com.spring.boot.coodle.services;
 
+import com.spring.boot.coodle.dao.AssignmentDao;
+import com.spring.boot.coodle.dao.CourseDao;
 import com.spring.boot.coodle.dao.PasswordResetDao;
 import com.spring.boot.coodle.dao.UserDao;
+import com.spring.boot.coodle.entities.Assignment;
+import com.spring.boot.coodle.entities.Course;
 import com.spring.boot.coodle.entities.PasswordResetToken;
 import static com.spring.boot.coodle.entities.PasswordResetToken.EXPIRATION;
 import com.spring.boot.coodle.entities.User;
@@ -24,6 +28,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    CourseDao courseDao;
+
+    @Autowired
+    AssignmentDao assignmentDao;
 
     static final String success = "Your password has been successfully reset.";
     static final String tokenExpired = "The token is expired.";
@@ -83,9 +93,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if (!isTokenExpired(passwordResetToken.getExpiryDate())) {
 
                 //updating in user entity the new password
-                userDao.update(passwordResetToken.getUser_id(), user);
+                userDao.update(passwordResetToken.getUser_id().getId(), user);
                 //After I update the password I delete the used token
                 passwordDao.delete(passwordResetToken.getId());
+                System.err.println(passwordResetToken.getId() + "Token= "
+                        + passwordResetToken.getToken());
                 return (success);
             } else {
                 return (tokenExpired);
@@ -124,10 +136,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public PasswordResetToken setPasswordResetFields(PasswordResetToken passwordResetToken, User user) {
-        passwordResetToken.setUser_id(user.getId());
+        passwordResetToken.setUser_id(user);
         passwordResetToken.setToken(generateToken());
         passwordResetToken.setExpiryDate(LocalDateTime.now());
-        passwordResetToken.setUser(user);
+//        passwordResetToken.setUser(user);
         return (passwordResetToken);
     }
 
@@ -139,7 +151,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public boolean hasIdPasswordResetToken(List<PasswordResetToken> passwordResetTokens, int id) {
 
         for (PasswordResetToken pResetToken : passwordResetTokens) {
-            return (pResetToken.getUser_id() == id);
+            return (pResetToken.getUser_id().getId() == id);
         }
         return (false);
     }
@@ -153,7 +165,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public PasswordResetToken iteratePasswordResetToken(List<PasswordResetToken> passResetTokens, int id) {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         for (PasswordResetToken passResetToken : passResetTokens) {
-            if (passResetToken.getUser_id() == id) {
+            if (passResetToken.getUser_id().getId() == id) {
                 passwordResetToken = passResetToken;
             }
         }
@@ -177,6 +189,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public boolean existsByEmail(String username) {
         return (userDao.existsByEmail(username));
+    }
+
+    public List<Course> findAllCourses() {
+        return (courseDao.findAllCourses());
+    }
+
+    public List<Assignment> findAllAssignments() {
+        return (assignmentDao.findAllAssignments());
     }
 
 }

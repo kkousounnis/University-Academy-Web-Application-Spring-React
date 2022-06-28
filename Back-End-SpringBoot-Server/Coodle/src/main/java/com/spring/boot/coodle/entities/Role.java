@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "roles")
@@ -26,8 +27,9 @@ public class Role implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 255)
+    @Column(name = "role", length = 255, unique = true)
     private ERole role;
+    
     @JoinTable(name = "users_roles", joinColumns = {
         @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)})

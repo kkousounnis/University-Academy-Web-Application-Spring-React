@@ -35,8 +35,8 @@ public class Student implements Serializable{
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id")
-    private User user;
-    
+    private User user;    
+      
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "students_courses",
             joinColumns = @JoinColumn(name = "student_id"),

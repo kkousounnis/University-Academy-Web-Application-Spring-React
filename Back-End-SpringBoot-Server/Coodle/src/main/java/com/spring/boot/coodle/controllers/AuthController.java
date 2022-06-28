@@ -10,7 +10,6 @@ import com.spring.boot.coodle.entities.dto.requests.ResetPasswordRequest;
 import com.spring.boot.coodle.entities.dto.requests.SignupRequest;
 import com.spring.boot.coodle.entities.dto.responses.JwtResponse;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
-import com.spring.boot.coodle.repository.PasswordResetRepository;
 import com.spring.boot.coodle.repository.RoleRepository;
 import com.spring.boot.coodle.repository.UserRepository;
 import com.spring.boot.coodle.services.UserDetailsImpl;
@@ -41,6 +40,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.spring.boot.coodle.repository.PasswordResetTokenRepository;
+import org.springframework.http.HttpStatus;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -57,7 +58,7 @@ public class AuthController {
     RoleRepository roleRepository;
 
     @Autowired
-    PasswordResetRepository passwordRepository;
+    PasswordResetTokenRepository passwordRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -103,7 +104,9 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
+         System.err.println("Check from here");
+        System.err.println("Check from here"+ signUpRequest);
+        
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -145,9 +148,11 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-
+        System.err.println("Check from here"+ user);
         userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        //to be checked and implemented
+        return new ResponseEntity(new MessageResponse("User registered successfully!"),HttpStatus.CREATED);
+//        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
     @PostMapping("/forgot-password")
@@ -207,5 +212,6 @@ public class AuthController {
 
         mailSender.send(message);
     }
+    
 
 }
