@@ -2,12 +2,12 @@ package com.spring.boot.coodle.controllers;
 
 import com.spring.boot.coodle.entities.Assignment;
 import com.spring.boot.coodle.entities.Course;
-import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
 import com.spring.boot.coodle.entities.dto.responses.UserResponseTable;
 import com.spring.boot.coodle.services.UserDetailsServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,7 +36,8 @@ public class ChooseAccessController {
         List<Assignment> assignments = new ArrayList<>();
         courses = userService.findAllCourses();
         assignments = userService.findAllAssignments();
-        return (ResponseEntity.ok(new UserResponseTable(courses, assignments)));
+        return new ResponseEntity(new UserResponseTable(courses, assignments),HttpStatus.OK);
+//        return (ResponseEntity.ok(new UserResponseTable(courses, assignments)));
     }
 
     @GetMapping("/mod")
