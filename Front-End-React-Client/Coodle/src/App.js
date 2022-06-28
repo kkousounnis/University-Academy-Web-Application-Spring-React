@@ -22,7 +22,7 @@ import EventBus from "./common/EventBus";
 
 class App extends Component {
   constructor(props) {
-    
+
     super(props);
     this.logOut = this.logOut.bind(this);
 
@@ -35,13 +35,14 @@ class App extends Component {
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-    
+
     if (user) {
       this.setState({
         currentUser: user,
         showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
+      console.log(user)
     }
 
     EventBus.on("logout", () => {
@@ -76,7 +77,7 @@ class App extends Component {
           </div>
 
           <nav class=" d-inline-flex  ">
-            {!currentUser&& (<div className=" mt-3 texta-dark text-decoration-none ">
+            {!currentUser && (<div className=" mt-3 texta-dark text-decoration-none ">
               <a className="nav-item text-dark text-decoration-none ">
                 <Link to={"/home"} className="nav-link text-dark">
                   Home
@@ -99,7 +100,7 @@ class App extends Component {
                   </Link>
                 </a>
               )}
-              
+
               {currentUser && (
                 <a className="nav-item mt-3 text-dark text-decoration-none ">
                   <Link to={"/user"} className="nav-link text-dark">
@@ -130,7 +131,7 @@ class App extends Component {
                     <Link to={"/login"} className="nav-link text-dark">
                       Login
                     </Link>
-                  </li>                  
+                  </li>
                   <li className="nav-item nav-link">
                     <Link to={"/register"} className="nav-link text-dark">
                       Sign Up
@@ -145,8 +146,9 @@ class App extends Component {
 
         <div className="container ">
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/home" component={Home} />
+           
+            
+              
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route exact path="/reset-password" component={ResetPassword} />
@@ -155,6 +157,22 @@ class App extends Component {
             <Route path="/user" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
+            {!currentUser ?
+              ( <Route exact path="/" component={Home} />) :
+              (<div class="container row p-5" >
+                <div class="col-6">
+                  <h2 class="text-primary mytext">This page you are looking is not available.</h2>
+                </div>
+              </div>
+            )}
+            {!currentUser ?
+              (<Route exact path="/home" component={Home} />) :
+              (<div class="container row p-5" >
+                <div class="col-6">
+                  <h2 class="text-primary mytext">This page you are looking is not available.</h2>
+                </div>
+              </div>
+            )}
           </Switch>
         </div>
         <footer className="container text-center">

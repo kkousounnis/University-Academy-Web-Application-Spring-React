@@ -78,7 +78,7 @@ export default class BoardUser extends Component {
         listOfCourses.push(course)
       }
     }
-    console.log(listOfCourses)
+    
     return (
       <div className="container">
         <header className="jumbotron">

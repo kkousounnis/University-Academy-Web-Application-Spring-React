@@ -164,6 +164,7 @@ public class AuthController {
                 response = "http://localhost:3000/reset-password?token=" + resetPasswordlink;
                 sendEmail(forgotPasswordRequest.getEmail(), response);
                 response = "We have sent a reset password link to your email. Please check.";
+                
                 return (ResponseEntity.ok(new MessageResponse(response)));
             } catch (UnsupportedEncodingException | MessagingException e) {
                 return (ResponseEntity.badRequest().body("Error while sending email."));
