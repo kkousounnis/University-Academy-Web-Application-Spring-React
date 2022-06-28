@@ -150,9 +150,7 @@ public class AuthController {
         user.setRoles(roles);
         System.err.println("Check from here"+ user);
         userRepository.save(user);
-        //to be checked and implemented
         return new ResponseEntity(new MessageResponse("User registered successfully!"),HttpStatus.CREATED);
-//        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
     @PostMapping("/forgot-password")
