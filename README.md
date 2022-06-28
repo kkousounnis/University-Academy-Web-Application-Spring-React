@@ -13,7 +13,7 @@
 
   **Front End: Javascript with React FrameWork.**<br>
 
-  ** Shell Scripts to run Services
+  **Shell Scripts to run Services
   
 #### Technologies:Rest Api, JPA/HIBERNATE ORM
 
