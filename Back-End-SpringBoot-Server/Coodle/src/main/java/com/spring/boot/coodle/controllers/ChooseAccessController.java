@@ -37,7 +37,6 @@ public class ChooseAccessController {
         courses = userService.findAllCourses();
         assignments = userService.findAllAssignments();
         return new ResponseEntity(new UserResponseTable(courses, assignments),HttpStatus.OK);
-//        return (ResponseEntity.ok(new UserResponseTable(courses, assignments)));
     }
 
     @GetMapping("/mod")
