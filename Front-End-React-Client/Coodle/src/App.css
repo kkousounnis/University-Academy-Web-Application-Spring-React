@@ -36,6 +36,11 @@ label {
     background-color:#0056d2 !important;
   }
 
+  .mytext{
+    
+    color:#0056d2 !important;
+  }
+
   .forgotPasswordButton{
     color : #0056d2 !important;
     font-size: 10px;
