@@ -1,29 +1,20 @@
 package com.spring.model;
 
+import com.spring.constraints.ValidPassword;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Password {
+    
+    @NotBlank
+    @Size(min = 8, max = 255)
+    @ValidPassword
+    private String password;
 
-    private static CharSequence password;
-
-    public Password() {
-    }
-
-    public Password(CharSequence password) {
-        this.password = password;
-    }
-
-    public CharSequence getPassword() {
-        return password;
-    }
-
-    public void setPassword(CharSequence password) {
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Password{");
-        sb.append("Password='").append(password).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
 }

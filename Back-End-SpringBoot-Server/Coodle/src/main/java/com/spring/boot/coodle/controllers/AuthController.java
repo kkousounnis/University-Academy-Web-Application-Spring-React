@@ -102,6 +102,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        System.err.println(signUpRequest+"working");
         
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
