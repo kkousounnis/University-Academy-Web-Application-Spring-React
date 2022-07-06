@@ -52,22 +52,38 @@ export default class Login extends Component {
     });
 
     this.form.validateAll();
+    let user = {
+      id: "",
+      email: "",
+      roles: "",
+      accessToken: ""
+    }
 
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          this.props.history.push("/user");
-          window.location.reload();
+          //revert from String to an object
+          user = JSON.parse(localStorage.getItem('user'));
+          if (user['roles'] == "ROLE_USER") {
+            this.props.history.push("/user");
+            window.location.reload();
+          }else if(user['roles'] == "ROLE_MODERATOR"){
+            this.props.history.push("/user");
+            window.location.reload();
+          }else if (user['roles'] == "ROLE_ADMIN"){
+            this.props.history.push("/admin");
+            window.location.reload();
+          }
         },
         error => {
-          
+
           const resMessage =
             (error.response &&
               error.response.data &&
               error.response.data.message) ||
             error.message ||
             error.toString();
-            
+
           this.setState({
             loading: false,
             // message: resMessage
@@ -102,7 +118,7 @@ export default class Login extends Component {
               <label htmlFor="username">Username</label>
               <Input
                 type="text"
-                placeHolder = "Email"
+                placeHolder="Email"
                 className="form-control"
                 name="username"
                 value={this.state.username}
@@ -115,7 +131,7 @@ export default class Login extends Component {
               <label htmlFor="password">Password</label>
               <Input
                 type="password"
-                placeHolder = "Password"
+                placeHolder="Password"
                 className="form-control"
                 name="password"
                 value={this.state.password}
@@ -125,7 +141,7 @@ export default class Login extends Component {
             </div>
             <div className="forgotPasswordButton">
               <a href="/forgot-password">
-              Forgot password?
+                Forgot password?
               </a>
             </div>
             <div className="form-group mt-4">

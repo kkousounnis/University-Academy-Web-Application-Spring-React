@@ -14,11 +14,14 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
+import BoardAdminProffessorList from "./components/board-admin-trainer-list.component";
+
 
 import CoodleIcon from "./assets/coodle_Logo.png";
 
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
+import boardAdminTrainerList from "./components/board-admin-trainer-list.component";
 
 class App extends Component {
   constructor(props) {
@@ -27,6 +30,7 @@ class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
+      showUserBoard: false,
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
@@ -39,6 +43,7 @@ class App extends Component {
     if (user) {
       this.setState({
         currentUser: user,
+        showUserBoard: user.roles.includes("ROLE_USER"),
         showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
@@ -57,6 +62,7 @@ class App extends Component {
   logOut() {
     AuthService.logout();
     this.setState({
+      showUserBoard: false,
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
@@ -64,7 +70,7 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showUserBoard, showModeratorBoard, showAdminBoard } = this.state;
 
     return (
       <BrowserRouter>
@@ -75,7 +81,7 @@ class App extends Component {
               <img src={CoodleIcon} class=" float-left" />
             </div>
           </div>
-
+          {/* Home User Button */}
           <nav class=" d-inline-flex  ">
             {!currentUser && (<div className=" mt-3 texta-dark text-decoration-none ">
               <a className="nav-item text-dark text-decoration-none ">
@@ -84,24 +90,27 @@ class App extends Component {
                 </Link>
               </a>
             </div>)}
+
+            {/* Trainer Button */}
             <div className="mt-3 text-dark text-decoration-none">
               {showModeratorBoard && (
-                <a className="nav-item">
+                <a className="nav-item text-dark text-decoration-none">
                   <Link to={"/mod"} className="nav-link text-dark">
                     Moderator Board
                   </Link>
                 </a>
               )}
-
+              {/* Administrator Button  */}
               {showAdminBoard && (
-                <a className="nav-item">
+                <a className="nav-item text-dark text-decoration-none">
                   <Link to={"/admin"} className="nav-link text-dark">
                     Admin Board
                   </Link>
                 </a>
               )}
 
-              {currentUser && (
+              {/* Showing Users Profile token id email role */}
+              {showUserBoard && (
                 <a className="nav-item mt-3 text-dark text-decoration-none ">
                   <Link to={"/user"} className="nav-link text-dark">
                     User
@@ -109,6 +118,20 @@ class App extends Component {
                 </a>
               )}
             </div>
+
+            {/* Administrator Trainer List Button  */}
+            {showAdminBoard && (
+              <div className="navbar navbar navbar-expand navbar-dark bg-white">
+                <ul class="navbar-nav">
+                  <a className="nav-item text-dark text-decoration-none">
+                    <Link to={"/adminTrainers"} className="nav-link text-dark">
+                      List Of Proffessors
+                    </Link>
+                  </a>
+                </ul>
+              </div>
+            )}
+
             {currentUser ? (
               <div className="navbar navbar navbar-expand navbar-dark bg-white">
                 <ul class="navbar-nav">
@@ -146,25 +169,24 @@ class App extends Component {
 
         <div className="container ">
           <Switch>
-           
-            
-              
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route exact path="/reset-password" component={ResetPassword} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route path="/user" component={BoardUser} />
+            {showUserBoard &&
+              < Route path="/user" component={BoardUser} />}
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
+            <Route path="/adminTrainers" component={boardAdminTrainerList} />
             {!currentUser ?
-              ( <Route exact path="/" component={Home} />) :
+              (<Route exact path="/" component={Home} />) :
               (<div class="container row p-5" >
                 <div class="col-6">
                   <h2 class="text-primary mytext">This page you are looking is not available.</h2>
                 </div>
               </div>
-            )}
+              )}
             {!currentUser ?
               (<Route exact path="/home" component={Home} />) :
               (<div class="container row p-5" >
@@ -172,7 +194,7 @@ class App extends Component {
                   <h2 class="text-primary mytext">This page you are looking is not available.</h2>
                 </div>
               </div>
-            )}
+              )}
           </Switch>
         </div>
         <footer className="container text-center">

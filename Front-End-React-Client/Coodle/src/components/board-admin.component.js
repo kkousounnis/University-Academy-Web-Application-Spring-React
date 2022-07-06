@@ -39,8 +39,16 @@ export default class BoardAdmin extends Component {
   render() {
     return (
       <div className="container">
-        <header className="jumbotron">
-          <h3>{this.state.content}</h3>
+        <header className="mt-4">
+          <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+              <div class="jumbotron text-center jumbo">
+                <h2 class="display-3">Welcome to the {this.state.content}</h2>
+                <p class="lead">"With great power comes great responsibility!"</p>
+                <p>~Uncle Ben</p>
+              </div>
+            </div>
+          </div>
         </header>
       </div>
     );
