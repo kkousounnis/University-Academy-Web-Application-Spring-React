@@ -48,6 +48,13 @@ public class ChooseAccessController {
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminAccess() {
-        return "Admin Board.";
+        return "Administrator Dashboard";
+    }
+    
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getListOfTrainers() {
+        
+        return new ResponseEntity("Test",HttpStatus.OK);
     }
 }
