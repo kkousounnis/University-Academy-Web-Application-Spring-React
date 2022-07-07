@@ -1,4 +1,3 @@
-
 package com.spring.boot.coodle.entities;
 
 import java.util.HashSet;
@@ -23,31 +22,31 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "trainers")
 public class Trainer {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "subbject", nullable = false, length = 255)
     private String subbject;
-    
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "trainers_courses",
             joinColumns = @JoinColumn(name = "trainer_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<Trainer> trainers = new HashSet<>();  
-    
+    private Set<Trainer> trainers = new HashSet<>();
+
     public Trainer() {
     }
 
@@ -81,7 +80,6 @@ public class Trainer {
         this.user = user;
     }
 
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -92,5 +90,5 @@ public class Trainer {
         sb.append('}');
         return sb.toString();
     }
-    
+
 }

@@ -1,47 +1,78 @@
 package com.spring.boot.coodle.entities.dto.responses;
 
-import com.spring.boot.coodle.entities.Trainer;
-import com.spring.boot.coodle.entities.User;
-import java.util.List;
-
 public class TrainerListResponse {
 
-    private List<Trainer> trainer;
+    private int id;
 
-    private List<User> user;
+    private String email;
+
+    private String password;
+
+    private String fistName;
+
+    private String lastName;
 
     public TrainerListResponse() {
     }
 
-    public TrainerListResponse(List<Trainer> trainer, List<User> user) {
-        this.trainer = trainer;
-        this.user = user;
+    public TrainerListResponse(int id, String email, String password, String fistName, String lastName) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.fistName = fistName;
+        this.lastName = lastName;
     }
 
-    public List<Trainer> getTrainer() {
-        return trainer;
+    public int getId() {
+        return id;
     }
 
-    public void setTrainer(List<Trainer> trainer) {
-        this.trainer = trainer;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public List<User> getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(List<User> user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFistName() {
+        return fistName;
+    }
+
+    public void setFistName(String fistName) {
+        this.fistName = fistName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("TrainerListResponse{");
-        sb.append("trainer=").append(trainer);
-        sb.append(", user=").append(user);
+        sb.append("id=").append(id);
+        sb.append(", email=").append(email);
+        sb.append(", password=").append(password);
+        sb.append(", fistName=").append(fistName);
+        sb.append(", lastName=").append(lastName);
         sb.append('}');
         return sb.toString();
     }
-
 }
