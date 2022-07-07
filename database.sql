@@ -20,10 +20,17 @@ INSERT INTO `courses`(`title`,`semester`,`price`) VALUES('MASTER_THESIS','B',400
 -- In order to create an admin password you must run Spring boot Password 
 -- encryption service and post a strong password in order to be encrypted.
 -- New Admin password: T^j>bb/(-(62S~9m
+
 use `coodle`;
 INSERT INTO `users`(`email`,`first_name`,`last_name`,`password`)
  VALUES('admin@coodle.com','admin','admin','$2a$10$Ov56CV8sQPjNcv4vOQ3tTuEf2vnEah3ahxATdaFWPa6Pg.Kdw0G9e');
 INSERT INTO `users_roles`(`role_id`,`user_id`) VALUES (23,3);
+
+
+-- First Trainer Password: A@er%/(-(62S~9m
+INSERT INTO `coodle`.`users` (`email`, `first_name`, `last_name`, `password`) 
+VALUES ('chermworthT@coodle.com', 'Trainer1', 'Trainer1', '$2a$10$CIVe4IO84/GLkDX7thUWrOgYxQn1KZYfBqIULQs0YLGAwqc5oMcj6');
+
 
 -- ------------------------------------------------------
 -- CREATE DATABASE `coodle1`;
