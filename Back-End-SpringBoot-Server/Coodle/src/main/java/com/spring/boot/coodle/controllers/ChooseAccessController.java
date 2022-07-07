@@ -2,7 +2,13 @@ package com.spring.boot.coodle.controllers;
 
 import com.spring.boot.coodle.entities.Assignment;
 import com.spring.boot.coodle.entities.Course;
+import com.spring.boot.coodle.entities.ERole;
+import com.spring.boot.coodle.entities.User;
+import com.spring.boot.coodle.entities.dto.responses.TrainerListResponse;
 import com.spring.boot.coodle.entities.dto.responses.UserResponseTable;
+import com.spring.boot.coodle.services.AssignmentServiceImpl;
+import com.spring.boot.coodle.services.CourseServiceImpl;
+import com.spring.boot.coodle.services.TrainerServiceImpl;
 import com.spring.boot.coodle.services.UserDetailsServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +29,15 @@ public class ChooseAccessController {
     @Autowired
     private UserDetailsServiceImpl userService;
 
+    @Autowired
+    private CourseServiceImpl courseService;
+
+    @Autowired
+    private AssignmentServiceImpl assignmentService;
+
+    @Autowired
+    private TrainerServiceImpl trainerService;
+
     @GetMapping("/all")
     public String allAccess() {
         return "Learn without limits";
@@ -34,9 +49,9 @@ public class ChooseAccessController {
 
         List<Course> courses = new ArrayList<>();
         List<Assignment> assignments = new ArrayList<>();
-        courses = userService.findAllCourses();
-        assignments = userService.findAllAssignments();
-        return new ResponseEntity(new UserResponseTable(courses, assignments),HttpStatus.OK);
+        courses = courseService.findAllCourses();
+        assignments = assignmentService.findAllAssignments();
+        return new ResponseEntity(new UserResponseTable(courses, assignments), HttpStatus.OK);
     }
 
     @GetMapping("/mod")
@@ -50,11 +65,19 @@ public class ChooseAccessController {
     public String adminAccess() {
         return "Administrator Dashboard";
     }
-    
-    @GetMapping("/admin")
+
+    @GetMapping("/trainers-list")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getListOfTrainers() {
-        
-        return new ResponseEntity("Test",HttpStatus.OK);
+
+        TrainerListResponse trainerListResponse = new TrainerListResponse();
+        List<User> users = new ArrayList<User>();
+        trainerListResponse.setTrainer(trainerService.findAllTrainers());
+        for (User user : userService.findAllUsers()) {
+            if (user.getRoles().equals(ERole.ROLE_MODERATOR)) {
+                users.add(user);
+            }
+        }
+        return new ResponseEntity(trainerListResponse, HttpStatus.OK);
     }
 }

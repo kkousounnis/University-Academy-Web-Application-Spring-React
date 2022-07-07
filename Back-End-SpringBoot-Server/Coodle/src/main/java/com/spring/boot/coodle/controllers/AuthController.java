@@ -102,8 +102,8 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        System.err.println(signUpRequest+"working");
-        
+        System.err.println(signUpRequest + "working");
+
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -145,7 +145,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        
+
         userRepository.save(user);
         return new ResponseEntity(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
     }
