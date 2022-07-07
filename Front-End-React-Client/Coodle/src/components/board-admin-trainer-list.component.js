@@ -8,16 +8,17 @@ export default class boardAdminTrainerList extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      trainers: []
     };
   }
 
   componentDidMount() {
-    UserService.getAdminBoard().then(
+    UserService.getTrainerListBoard().then(
       response => {
         this.setState({
-          content: response.data
+          trainersContent: response.data.trainer
         });
+        
       },
       error => {
         this.setState({
@@ -37,6 +38,32 @@ export default class boardAdminTrainerList extends Component {
   }
 
   render() {
+    let user = {
+      id:"",
+      "email":"",
+      "fistName":"",
+      "lastName":"",
+      "roles":[]
+
+    }
+
+    let trainer = {
+      id: "",
+      subject: "",
+      user: user
+    }
+
+    const listOfTrainers = [];
+    var valuesArray = this.state.trainersContent;
+    console.log("List OF Trainers:"+ JSON.stringify(this.state.trainersContent));
+    console.log("List OF Trainers:"+ valuesArray);
+    for (var key in valuesArray){
+      if(valuesArray.hasOwnProperty(key)){
+        console.log(valuesArray[key]);
+        trainer = valuesArray[key];
+        listOfTrainers.push(trainer);
+      }
+    }
     return (
       <div className="container">
         <header className="jumbotron">
@@ -51,22 +78,15 @@ export default class boardAdminTrainerList extends Component {
               </tr>
             </thead>
             <tbody>
-              {/* {
-                listOfCourses.map(
-                  course =>
-                    <tr key={course.id}>
-                      <td> {course.title} </td>
-                      <td>{course.passingGrade}</td>
-                      <td> {course.semester} </td>
-                      <td> {course.price} </td>
-                      <td> {course.isPaid} </td>
-                      <td> {course.hasAttendedECourses} </td>
-                      <td> {course.assignment} </td>
-                      <td> {course.isPaid} </td>
+              {
+                listOfTrainers.map(
+                  trainer =>
+                    <tr key={trainer.id}>
+                      <td> {trainer.email} </td>
 
                     </tr>
                 )
-              } */}
+              }
             </tbody>
           </table>
         </header>
