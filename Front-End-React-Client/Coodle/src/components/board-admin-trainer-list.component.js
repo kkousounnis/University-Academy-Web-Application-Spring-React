@@ -16,9 +16,9 @@ export default class boardAdminTrainerList extends Component {
     UserService.getTrainerListBoard().then(
       response => {
         this.setState({
-          trainersContent: response.data.trainer
+          trainersContent: response.data
         });
-        
+
       },
       error => {
         this.setState({
@@ -38,27 +38,20 @@ export default class boardAdminTrainerList extends Component {
   }
 
   render() {
-    let user = {
-      id:"",
-      "email":"",
-      "fistName":"",
-      "lastName":"",
-      "roles":[]
-
-    }
-
     let trainer = {
       id: "",
-      subject: "",
-      user: user
+      "email": "",
+      "password": "",
+      "fistName": "",
+      "lastName": ""
     }
 
     const listOfTrainers = [];
     var valuesArray = this.state.trainersContent;
-    console.log("List OF Trainers:"+ JSON.stringify(this.state.trainersContent));
-    console.log("List OF Trainers:"+ valuesArray);
-    for (var key in valuesArray){
-      if(valuesArray.hasOwnProperty(key)){
+    console.log("List OF Trainers:" + JSON.stringify(this.state.trainersContent));
+    console.log("List OF Trainers:" + valuesArray);
+    for (var key in valuesArray) {
+      if (valuesArray.hasOwnProperty(key)) {
         console.log(valuesArray[key]);
         trainer = valuesArray[key];
         listOfTrainers.push(trainer);
@@ -83,7 +76,9 @@ export default class boardAdminTrainerList extends Component {
                   trainer =>
                     <tr key={trainer.id}>
                       <td> {trainer.email} </td>
-
+                      <td> {trainer.password} </td>
+                      <td> {trainer.fistName} </td>
+                      <td> {trainer.lastName} </td>
                     </tr>
                 )
               }

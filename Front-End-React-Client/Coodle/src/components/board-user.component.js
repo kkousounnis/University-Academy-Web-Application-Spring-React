@@ -111,7 +111,6 @@ export default class BoardUser extends Component {
                       <td> {course.hasAttendedECourses} </td>
                       <td> {course.assignment} </td>
                       <td> {course.isPaid} </td>
-
                     </tr>
                 )
               }
