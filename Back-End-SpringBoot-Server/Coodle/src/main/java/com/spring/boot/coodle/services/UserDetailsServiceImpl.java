@@ -5,8 +5,10 @@ import com.spring.boot.coodle.dao.UserDao;
 import com.spring.boot.coodle.entities.PasswordResetToken;
 import static com.spring.boot.coodle.entities.PasswordResetToken.EXPIRATION;
 import com.spring.boot.coodle.entities.User;
+import com.spring.boot.coodle.entities.dto.responses.TrainerListResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +78,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (null != findByToken(token).getToken()) {
             User user = new User(password);
             PasswordResetToken passwordResetToken = findByToken(token);
-            System.err.println(passwordResetToken.getId() + "Token= "
-                    + passwordResetToken.getToken());
 
             //check if the token is valid. Token is valid only under 24 hours
             if (!isTokenExpired(passwordResetToken.getExpiryDate())) {
@@ -86,8 +86,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 userDao.update(passwordResetToken.getUser_id().getId(), user);
                 //After I update the password I delete the used token
                 passwordDao.delete(passwordResetToken.getId());
-                System.err.println(passwordResetToken.getId() + "Token= "
-                        + passwordResetToken.getToken());
+
                 return (success);
             } else {
                 return (tokenExpired);
@@ -120,7 +119,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         LocalDateTime now = LocalDateTime.now();
         Duration diff = Duration.between(tokenCreationDate, now);
-        System.err.println("DIfference" + diff + ">=Expiration: " + EXPIRATION + "=" + (diff.toMinutes() >= EXPIRATION));
+        //DIfference" + diff + ">=Expiration: " + EXPIRATION + "=" + (diff.toMinutes() >= EXPIRATION)        
         return (diff.toMinutes() >= EXPIRATION);
 
     }
@@ -179,6 +178,43 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public boolean existsByEmail(String username) {
         return (userDao.existsByEmail(username));
+    }
+
+    /**
+     *
+     * @return List of Trainers
+     */
+    public List<TrainerListResponse> findAllUserTrainers() {
+
+        List<TrainerListResponse> trainers = new ArrayList<TrainerListResponse>();
+
+        List<User> users = new ArrayList<User>();
+        for (User user : findAllUsers()) {
+            //id = 2 is role moderator = trainer
+            if (user.getRoles().toString().contains("2")) {
+
+                TrainerListResponse trainerListResponse = setTrainerListResponse(user);
+
+                trainers.add(trainerListResponse);
+            }
+        }
+        return trainers;
+    }
+
+    /**
+     *
+     * @param trainerListResponse
+     * @param user
+     * @return trainerListResponse
+     */
+    public TrainerListResponse setTrainerListResponse(User user) {
+        TrainerListResponse trainerListResponse = new TrainerListResponse();
+        trainerListResponse.setId(user.getId());
+        trainerListResponse.setEmail(user.getEmail());
+        trainerListResponse.setPassword(user.getPassword());
+        trainerListResponse.setFistName(user.getFirstName());
+        trainerListResponse.setLastName(user.getLastName());
+        return (trainerListResponse);
     }
 
     public List<User> findAllUsers() {

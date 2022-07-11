@@ -11,6 +11,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Autowired
     private TrainerDaoImpl trainerDao;
+    
 
     @Override
     public List<Trainer> findAllTrainers() {
