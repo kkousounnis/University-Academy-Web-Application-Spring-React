@@ -23,6 +23,20 @@ class UserService {
   getTrainerListBoard() {
     return axios.get(API_URL + 'trainers-list', { headers: authHeader() });
   }
+
+  getTrainerById(trainerId) {
+    return axios.get(API_URL + '/' + trainerId);
+  }
+
+  updateTrainer(trainer, trainerId) {
+    return axios.put(API_URL + '/' + trainerId, trainer);
+  }
+
+  deleteEmployee(trainerId) {
+    return axios.delete(API_URL + '/' + trainerId);
+  }
+
+
 }
 
 export default new UserService();

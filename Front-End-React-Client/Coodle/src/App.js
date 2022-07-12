@@ -14,8 +14,9 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
-import BoardAdminProffessorList from "./components/board-admin-trainer-list.component";
 
+import ListTrainerComponent from "./components/board-admin-trainer-list.component";
+import CreateTrainerComponent from "./components/board-admin-trainer-list.component";
 
 import CoodleIcon from "./assets/coodle_Logo.png";
 
@@ -179,6 +180,9 @@ class App extends Component {
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
             <Route path="/adminTrainers" component={boardAdminTrainerList} />
+            <Route path="/" exact component={ListTrainerComponent}></Route>
+            <Route path="/trainer" component={ListTrainerComponent}></Route>
+            <Route path="/add-trainer/:id" component={CreateTrainerComponent}></Route>
             {!currentUser ?
               (<Route exact path="/" component={Home} />) :
               (<div class="container row p-5" >
