@@ -72,6 +72,11 @@ public class AuthController {
     @Autowired
     private UserDetailsServiceImpl userService;
 
+    /**
+     * 
+     * @param loginRequest
+     * @return HTTPS request
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         //check if the user exists 
@@ -99,7 +104,10 @@ public class AuthController {
         }
 
     }
-
+    /**
+     * @param signUpRequest
+     * @return HTTPS Status
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (null != signUpRequest) {
@@ -126,30 +134,9 @@ public class AuthController {
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(userRole);
                 } else {
-                    strRoles.forEach(role -> {
-                        switch (role) {
-                            case "admin":
-                                Role adminRole = roleRepository.findByRole(ERole.ROLE_ADMIN)
-                                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                                roles.add(adminRole);
-
-                                break;
-                            case "mod":
-                                Role modRole = roleRepository.findByRole(ERole.ROLE_MODERATOR)
-                                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                                roles.add(modRole);
-
-                                break;
-                            default:
-                                Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
-                                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                                roles.add(userRole);
-                        }
-                    });
+                    findRole(strRoles, roles);
                 }
-
                 user.setRoles(roles);
-
                 userRepository.save(user);
                 return new ResponseEntity(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
             } else {
@@ -162,7 +149,38 @@ public class AuthController {
             return new ResponseEntity(new MessageResponse("User must not be null"), HttpStatus.BAD_REQUEST);
         }
     }
+    
+    /** 
+    * @param strRoles
+    * @param roles 
+    */    
+    public void findRole(Set<String> strRoles, Set<Role> roles) {
+        strRoles.forEach(role -> {
+            switch (role) {
+                case "admin":
+                    Role adminRole = roleRepository.findByRole(ERole.ROLE_ADMIN)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(adminRole);
 
+                    break;
+                case "mod":
+                    Role modRole = roleRepository.findByRole(ERole.ROLE_MODERATOR)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(modRole);
+
+                    break;
+                default:
+                    Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(userRole);
+            }
+        });
+    }
+
+    /**
+     * @param forgotPasswordRequest
+     * @return
+     */
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
         String response = "";
