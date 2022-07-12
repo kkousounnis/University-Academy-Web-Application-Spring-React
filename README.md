@@ -8,7 +8,7 @@
 
 ![image](https://user-images.githubusercontent.com/39504405/177527182-19d6a723-1199-497e-b144-7d23fc712be7.png)
 
-![image](https://user-images.githubusercontent.com/39504405/178367569-8f2f838e-f1bb-4a2c-9b6f-5e4b682028ff.png)
+![image](https://user-images.githubusercontent.com/39504405/178603914-2312b340-4d56-4f15-af04-ea5e47fe107f.png)
 
 #### Programming Languages: 
 
