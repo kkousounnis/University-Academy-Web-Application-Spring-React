@@ -15,6 +15,8 @@
   **Back End:Java with Spring Boot FrameWork.**<br>
   
   **Front End: Javascript with React FrameWork.**<br>
+  
+  **Infrastructure: Linux, Docker**<br>
 
   **Shell Scripts to run Services**<br>
   
