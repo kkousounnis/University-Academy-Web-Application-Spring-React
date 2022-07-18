@@ -101,7 +101,7 @@ export default class boardAdminTrainerList extends Component {
                       <td> {trainer.fistName} </td>
                       <td> {trainer.lastName} </td>
                       <td>
-                        <button type="button" class="m-3 btn btn-warning" /*onClick={() => this.editTrainer(trainer.id)}*/>Update</button>
+                        <button type="button" class="m-3 btn btn-warning" /*onClick={() => this.editTrainer(trainer.id)}*/>Edit</button>
                         <button type="button" class="btn btn-danger" /*onClick={ () => this.deleteTrainer(trainer.id)}*/>Delete</button>
                       </td>
                     </tr>
