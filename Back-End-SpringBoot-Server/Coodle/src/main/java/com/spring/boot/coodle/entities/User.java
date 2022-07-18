@@ -69,7 +69,7 @@ public class User implements Serializable {
     private Student student;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Trainer trainer;
 
     @OneToMany(fetch = FetchType.LAZY,
@@ -166,6 +166,22 @@ public class User implements Serializable {
         return hash;
     }
 
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -194,7 +210,5 @@ public class User implements Serializable {
         sb.append('}');
         return sb.toString();
     }
-
-    
 
 }

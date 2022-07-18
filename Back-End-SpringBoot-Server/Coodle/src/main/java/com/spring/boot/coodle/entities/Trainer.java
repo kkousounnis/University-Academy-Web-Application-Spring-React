@@ -1,7 +1,6 @@
 package com.spring.boot.coodle.entities;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -23,11 +22,10 @@ import javax.validation.constraints.Size;
 @Table(name = "trainers")
 public class Trainer {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "user_id", nullable = false, unique = true)
     private Integer id;
 
     @Basic(optional = false)
@@ -48,12 +46,6 @@ public class Trainer {
     private Set<Trainer> trainers = new HashSet<>();
 
     public Trainer() {
-    }
-
-    public Trainer(Integer id, String subbject, User user) {
-        this.id = id;
-        this.subbject = subbject;
-        this.user = user;
     }
 
     public Integer getId() {
@@ -84,7 +76,7 @@ public class Trainer {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Trainer{");
-        sb.append("id=").append(id);
+        sb.append("user_id=").append(id);
         sb.append(", subbject=").append(subbject);
         sb.append(", user=").append(user);
         sb.append('}');

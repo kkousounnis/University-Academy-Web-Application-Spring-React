@@ -3,6 +3,7 @@ package com.spring.boot.coodle.dao;
 import com.spring.boot.coodle.entities.Trainer;
 import com.spring.boot.coodle.repository.TrainerRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +30,11 @@ public class TrainerDaoImpl implements TrainerDao {
          */
         myTrainer = trainer;
         return (trainerRepository.save(trainer));
+    }
+    
+    public Optional<Trainer> findById(int id){
+        
+        return (trainerRepository.findById(id));
     }
 
     public void delete(int id) {
