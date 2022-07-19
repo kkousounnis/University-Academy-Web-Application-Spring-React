@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChooseAccessController {
 
     private static final String nullMessage = "Null values are not allowed.";
+    private static final String trainerSaved = "Trainer saved with success.";
 
     @Autowired
     private UserDetailsServiceImpl userService;
@@ -89,12 +90,12 @@ public class ChooseAccessController {
 
     @PostMapping("/trainer")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> save( @RequestBody TrainerRequest trainerRequest) {
+    public ResponseEntity<?> save(@Valid @RequestBody TrainerRequest trainerRequest) {
         if (null != trainerRequest) {
             trainerRequest.setPassword(encoder.encode(trainerRequest.getPassword()));
             
             trainerService.save(trainerRequest);
-            return (new ResponseEntity("Trainer Saved",
+            return (new ResponseEntity(new MessageResponse(trainerSaved),
                     HttpStatus.CREATED));
         } else {
             return (new ResponseEntity(new MessageResponse(nullMessage),

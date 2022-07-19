@@ -17,64 +17,74 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TrainerServiceImpl implements TrainerService {
-    
+
     @Autowired
     private TrainerDaoImpl trainerDao;
-    
+
     @Autowired
     private UserDaoImpl userDao;
-    
+
     @Autowired
     private RoleRepository roleRepository;
-    
+
     @Override
     public List<Trainer> findAllTrainers() {
-        
+
         return trainerDao.findAllTrainers();
     }
-    
+
     @Override
     public TrainerRequest update(int id, TrainerRequest trainerRequest) {
-        
+
         return (null);
     }
-    
+
     @Override
     public Optional<Trainer> findById(int id) {
-        
+
         return (trainerDao.findById(id));
     }
-    
+
+    /**
+     *
+     * @param trainerRequest
+     */
     @Override
     public void save(TrainerRequest trainerRequest) {
         Trainer trainer = new Trainer();
+        User user = setUser(trainerRequest);
+        Set<Role> roles = setRoles();
+        user.setRoles(roles);
+        //save user trainer in user table
+        user = userDao.save(user);
+        trainer.setSubbject(trainerRequest.getSubject());
+        trainer.setUser(user);
+        //save trainer in table trainer
+        trainerDao.save(trainer);
+
+    }
+
+    public Set<Role> setRoles() {
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleRepository.findByRole(ERole.ROLE_MODERATOR)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+        return roles;
+    }
+
+    public User setUser(TrainerRequest trainerRequest) {
         User user = new User();
         user.setEmail(trainerRequest.getEmail());
         user.setFirstName(trainerRequest.getFirstName());
         user.setLastName(trainerRequest.getLastName());
         user.setPassword(trainerRequest.getPassword());
-        Set<Role> roles = new HashSet<>();
-        
-        Role userRole = roleRepository.findByRole(ERole.ROLE_MODERATOR)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));        
-        roles.add(userRole);
-        user.setRoles(roles);
-        user = userDao.save(user);
-        
-        System.err.println("Do I pass this point????"+user.getId() + trainerRequest);
-        trainer.setSubbject(trainerRequest.getSubject());
-        
-        trainer.setUser(user);
-        
-        System.err.println("Trainer"+ trainer);
-        trainerDao.save(trainer);
-        
+        return user;
     }
-    
+
     @Override
     public void delete(int id) {
-        
+
         trainerDao.delete(id);
     }
-    
+
 }
