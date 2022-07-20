@@ -4,6 +4,7 @@ import com.spring.boot.coodle.dao.PasswordResetDao;
 import com.spring.boot.coodle.dao.UserDao;
 import com.spring.boot.coodle.entities.PasswordResetToken;
 import static com.spring.boot.coodle.entities.PasswordResetToken.EXPIRATION;
+import com.spring.boot.coodle.entities.Trainer;
 import com.spring.boot.coodle.entities.User;
 import com.spring.boot.coodle.entities.dto.responses.TrainerListResponse;
 import java.time.Duration;
@@ -184,17 +185,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      *
      * @return List of Trainers
      */
-    public List<TrainerListResponse> findAllUserTrainers() {
+    public List<TrainerListResponse> findAllUserTrainers(List<Trainer> findAllTrainers) {
 
         List<TrainerListResponse> trainers = new ArrayList<TrainerListResponse>();
-
         List<User> users = new ArrayList<User>();
         for (User user : findAllUsers()) {
             //id = 2 is role moderator = trainer
             if (user.getRoles().toString().contains("2")) {
 
                 TrainerListResponse trainerListResponse = setTrainerListResponse(user);
-
+                trainerListResponse = setTrainerSubject(trainerListResponse, findAllTrainers);
                 trainers.add(trainerListResponse);
             }
         }
@@ -214,7 +214,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         trainerListResponse.setPassword(user.getPassword());
         trainerListResponse.setFistName(user.getFirstName());
         trainerListResponse.setLastName(user.getLastName());
+
         return (trainerListResponse);
+    }
+
+    /**
+     *
+     * @param trainerListResponse
+     * @param allTrainers
+     * @return TrainerListResponse
+     */
+    public TrainerListResponse setTrainerSubject(TrainerListResponse trainerListResponse,
+            List<Trainer> allTrainers) {
+        for (Trainer trainer : allTrainers) {
+            if (trainer.getId().equals(trainerListResponse.getId())) {
+                trainerListResponse.setSubject(trainer.getSubbject());
+            }
+        }
+        return trainerListResponse;
     }
 
     public List<User> findAllUsers() {

@@ -3,6 +3,7 @@ package com.spring.boot.coodle.controllers;
 import com.spring.boot.coodle.entities.Assignment;
 import com.spring.boot.coodle.entities.Course;
 import com.spring.boot.coodle.entities.ERole;
+import com.spring.boot.coodle.entities.Trainer;
 import com.spring.boot.coodle.entities.dto.requests.TrainerRequest;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
 import com.spring.boot.coodle.entities.dto.responses.TrainerListResponse;
@@ -83,17 +84,17 @@ public class ChooseAccessController {
     @GetMapping("/trainers-list")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getListOfTrainers() {
-
-        List<TrainerListResponse> trainers = userService.findAllUserTrainers();
+        List<Trainer> findAllTrainers = trainerService.findAllTrainers();
+        List<TrainerListResponse> trainers = userService.findAllUserTrainers(findAllTrainers);
+     
         return (new ResponseEntity(trainers, HttpStatus.OK));
     }
 
     @PostMapping("/trainer")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> save(@Valid @RequestBody TrainerRequest trainerRequest) {
+    public ResponseEntity<?> save(@RequestBody TrainerRequest trainerRequest) {
         if (null != trainerRequest) {
             trainerRequest.setPassword(encoder.encode(trainerRequest.getPassword()));
-            
             trainerService.save(trainerRequest);
             return (new ResponseEntity(new MessageResponse(trainerSaved),
                     HttpStatus.CREATED));

@@ -12,15 +12,19 @@ public class TrainerListResponse {
 
     private String lastName;
 
+    private String subject;
+
     public TrainerListResponse() {
     }
 
-    public TrainerListResponse(int id, String email, String password, String fistName, String lastName) {
+    public TrainerListResponse(int id, String email, String password,
+            String fistName, String lastName, String subject) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.fistName = fistName;
         this.lastName = lastName;
+        this.subject = subject;
     }
 
     public int getId() {
@@ -63,6 +67,14 @@ public class TrainerListResponse {
         this.lastName = lastName;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -72,7 +84,9 @@ public class TrainerListResponse {
         sb.append(", password=").append(password);
         sb.append(", fistName=").append(fistName);
         sb.append(", lastName=").append(lastName);
+        sb.append(", subject=").append(subject);
         sb.append('}');
         return sb.toString();
     }
+
 }

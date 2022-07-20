@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainerRequest {
-    
+
     @NotBlank
     @Size(max = 50)
     @Email(message = "Email is not valid",
@@ -44,7 +44,7 @@ public class TrainerRequest {
     private String lastName;
 
     private Set<Role> role;
-    
+
     @NotNull
     @Size(min = 3, max = 20)
     private String subject;
