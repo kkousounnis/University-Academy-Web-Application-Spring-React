@@ -20,6 +20,17 @@ class UserService {
     return axios.get(API_URL + 'admin', { headers: authHeader() });
   }
 
+  registerTrainer(email, password, firstName, lastName, subject) {
+    return axios.post(API_URL + "trainer", {
+      email,
+      password,
+      firstName,
+      lastName,
+      subject
+    },
+    { headers: authHeader()});
+  }
+
   getTrainerListBoard() {
     return axios.get(API_URL + 'trainers-list', { headers: authHeader() });
   }

@@ -55,7 +55,7 @@ export default class boardAdminTrainerList extends Component {
   }
 
   addTrainer() {
-    this.props.history.push('/add-trainer/_add');
+    this.props.history.push('/register-trainer/');
   }
 
   render() {
@@ -78,7 +78,10 @@ export default class boardAdminTrainerList extends Component {
     return (
       <div className="container">
         <h2>List Of Proffessors</h2>
-        <button type="button" class="m-3 btn btn-primary mybutton" /*onClick={this.addTrainer}*/>Add new Trainer</button>
+        <button type="button" class="m-3 btn btn-primary mybutton" onClick={this.addTrainer}>
+          Add new Trainer
+        </button>
+
         <header className="jumbotron">
 
           <table class="table table-light">
@@ -88,6 +91,7 @@ export default class boardAdminTrainerList extends Component {
                 <th scope="col">Password</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
+                <th scope="col">Subject</th>
                 <th> Actions</th>
               </tr>
             </thead>
@@ -100,8 +104,9 @@ export default class boardAdminTrainerList extends Component {
                       <td> {trainer.password} </td>
                       <td> {trainer.fistName} </td>
                       <td> {trainer.lastName} </td>
+                      <td> {trainer.subject} </td>
                       <td>
-                        <button type="button" class="m-3 btn btn-warning" /*onClick={() => this.editTrainer(trainer.id)}*/>Edit</button>
+                        <button type="button" class="m-1 btn btn-warning" /*onClick={() => this.editTrainer(trainer.id)}*/>Edit</button>
                         <button type="button" class="btn btn-danger" /*onClick={ () => this.deleteTrainer(trainer.id)}*/>Delete</button>
                       </td>
                     </tr>

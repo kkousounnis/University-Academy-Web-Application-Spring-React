@@ -9,6 +9,7 @@ import Login from "./components/login.component";
 import ResetPassword from "./components/reset-password.component";
 import ForgotPassword from "./components/forgot-password.component";
 import Register from "./components/register.component";
+import RegisterTrainer from "./components/register-trainer.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
@@ -29,7 +30,6 @@ class App extends Component {
 
     super(props);
     this.logOut = this.logOut.bind(this);
-
     this.state = {
       showUserBoard: false,
       showModeratorBoard: false,
@@ -79,7 +79,7 @@ class App extends Component {
         <div class="navbar navbar d-flex flex-column flex-md-row align-items-center mb-1 border-bottom">
           <div class="d-flex align-items-center text-dark text-decoration-none ">
             <div className="navbar-brand container justify-content" >
-              <img src={CoodleIcon} class=" float-left" />
+              <img src={CoodleIcon} class=" float-left"/>
             </div>
           </div>
           {/* Home User Button */}
@@ -182,6 +182,7 @@ class App extends Component {
             <Route path="/adminTrainers" component={boardAdminTrainerList} />
             <Route path="/" exact component={ListTrainerComponent}></Route>
             <Route path="/trainer" component={ListTrainerComponent}></Route>
+            <Route path="/register-trainer" component={RegisterTrainer}></Route>
             <Route path="/add-trainer/:id" component={CreateTrainerComponent}></Route>
             {!currentUser ?
               (<Route exact path="/" component={Home} />) :
