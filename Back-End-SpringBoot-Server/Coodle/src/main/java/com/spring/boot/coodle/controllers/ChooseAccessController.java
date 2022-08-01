@@ -37,6 +37,7 @@ public class ChooseAccessController {
 
     private static final String nullMessage = "Null values are not allowed.";
     private static final String trainerSaved = "Trainer saved with success.";
+    private static final String deletedMessage = "Trainer deleted with success.";
 
     @Autowired
     private UserDetailsServiceImpl userService;
@@ -86,7 +87,7 @@ public class ChooseAccessController {
     public ResponseEntity<?> getListOfTrainers() {
         List<Trainer> findAllTrainers = trainerService.findAllTrainers();
         List<TrainerListResponse> trainers = userService.findAllUserTrainers(findAllTrainers);
-     
+
         return (new ResponseEntity(trainers, HttpStatus.OK));
     }
 
@@ -114,10 +115,10 @@ public class ChooseAccessController {
 
     @DeleteMapping("/trainer/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
-
-        trainerService.delete(id);
-        return (new ResponseEntity(new MessageResponse(nullMessage),
-                HttpStatus.BAD_REQUEST));
+        System.err.println("Id" + id);
+        userService.delete(id);
+        return (new ResponseEntity(new MessageResponse(deletedMessage),
+                HttpStatus.OK));
     }
 
     @PutMapping("/trainer")
