@@ -237,5 +237,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<User> findAllUsers() {
         return (userDao.findAllUsers());
     }
+    
+    public void delete(int id) {
+
+        userDao.delete(id);
+    }
 
 }
