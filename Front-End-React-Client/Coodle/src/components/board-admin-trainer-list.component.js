@@ -13,7 +13,9 @@ export default class boardAdminTrainerList extends Component {
     this.deleteTrainer = this.deleteTrainer.bind(this);
 
     this.state = {
-      trainers: []
+      trainers: [],
+      successful: false,
+      message: ""
     };
 
   }
@@ -47,10 +49,34 @@ export default class boardAdminTrainerList extends Component {
     this.props.history.push(`/add-trainer/${id}`);
   }
 
+
+
   deleteTrainer(id) {
-    UserService.deleteTrainer(id).then(res => {
-      this.setState({ trainers: this.state.trainers.filter(trainer => trainer.id !== id) });
-    });
+    UserService.deleteTrainer(id).then(response => {
+      this.setState({
+        trainers: this.state.trainers.filter(trainer => trainer.id !== id),
+        message: response.data.message,
+        successful: true,
+
+      }
+      );
+
+
+    },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        this.setState({
+          successful: false,
+          message: resMessage
+        });
+
+      });
 
   }
 
@@ -77,11 +103,27 @@ export default class boardAdminTrainerList extends Component {
     }
     return (
       <div className="container">
+        {this.state.message && (
+          <div className="form-group">
+            <div
+              className={
+                this.state.successful
+                  ? "alert alert-success"
+                  : "alert alert-danger"
+              }
+              role="alert"
+            >
+              {this.state.message}
+            </div>
+          </div>
+        )}
+  
         <h2>List Of Proffessors</h2>
         <button type="button" class="m-3 btn btn-primary mybutton" onClick={this.addTrainer}>
           Add new Trainer
         </button>
-
+        
+        
         <header className="jumbotron">
 
           <table class="table table-light">
@@ -95,10 +137,14 @@ export default class boardAdminTrainerList extends Component {
                 <th> Actions</th>
               </tr>
             </thead>
+
+          
             <tbody>
-              {
+              {!this.state.successful && 
+                
                 listOfTrainers.map(
                   trainer =>
+                  
                     <tr key={trainer.id}>
                       <td> {trainer.email} </td>
                       <td> {trainer.password} </td>
@@ -107,7 +153,7 @@ export default class boardAdminTrainerList extends Component {
                       <td> {trainer.subject} </td>
                       <td>
                         <button type="button" class="m-1 btn btn-warning" /*onClick={() => this.editTrainer(trainer.id)}*/>Edit</button>
-                        <button type="button" class="btn btn-danger" /*onClick={ () => this.deleteTrainer(trainer.id)}*/>Delete</button>
+                        <button type="button" class="btn btn-danger" onClick={() => this.deleteTrainer(trainer.id)}>Delete</button>
                       </td>
                     </tr>
                 )
@@ -116,6 +162,7 @@ export default class boardAdminTrainerList extends Component {
           </table>
         </header>
       </div>
+      
     );
   }
 }

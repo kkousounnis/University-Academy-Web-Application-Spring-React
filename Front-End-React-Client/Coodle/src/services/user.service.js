@@ -43,8 +43,8 @@ class UserService {
     return axios.put(API_URL + '/' + trainerId, trainer);
   }
 
-  deleteEmployee(trainerId) {
-    return axios.delete(API_URL + '/' + trainerId);
+  deleteTrainer(trainerId) {
+    return axios.delete(API_URL + 'trainer/' + trainerId);
   }
 
 
