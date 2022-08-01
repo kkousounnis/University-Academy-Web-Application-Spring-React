@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,13 +58,13 @@ public class Course {
     @JoinTable(name = "students_courses", joinColumns = {
         @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "student_id", referencedColumnName = "user_id", nullable = false)})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Student> studentList;
 
     @JoinTable(name = "trainers_courses", joinColumns = {
         @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "trainer_id", referencedColumnName = "user_id", nullable = false)})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Trainer> trainerList;
 
     public Course() {

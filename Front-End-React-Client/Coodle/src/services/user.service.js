@@ -19,6 +19,35 @@ class UserService {
   getAdminBoard() {
     return axios.get(API_URL + 'admin', { headers: authHeader() });
   }
+
+  registerTrainer(email, password, firstName, lastName, subject) {
+    return axios.post(API_URL + "trainer", {
+      email,
+      password,
+      firstName,
+      lastName,
+      subject
+    },
+    { headers: authHeader()});
+  }
+
+  getTrainerListBoard() {
+    return axios.get(API_URL + 'trainers-list', { headers: authHeader() });
+  }
+
+  getTrainerById(trainerId) {
+    return axios.get(API_URL + '/' + trainerId);
+  }
+
+  updateTrainer(trainer, trainerId) {
+    return axios.put(API_URL + '/' + trainerId, trainer);
+  }
+
+  deleteTrainer(trainerId) {
+    return axios.delete(API_URL + 'trainer/' + trainerId);
+  }
+
+
 }
 
 export default new UserService();

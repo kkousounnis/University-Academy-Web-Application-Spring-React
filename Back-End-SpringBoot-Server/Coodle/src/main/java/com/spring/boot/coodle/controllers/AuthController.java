@@ -72,6 +72,11 @@ public class AuthController {
     @Autowired
     private UserDetailsServiceImpl userService;
 
+    /**
+     * 
+     * @param loginRequest
+     * @return HTTPS request
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         //check if the user exists 
@@ -90,7 +95,7 @@ public class AuthController {
                     userDetails.getId(), userDetails.getUsername(), roles), HttpStatus.OK);
         } catch (AuthenticationException authenticationException) {
             /**
-             * We catch the bad request that there is inside
+             * @Description We catch the bad request that there is inside
              * AuthenticationManager because we did not had any body when there
              * was no user
              *
@@ -99,58 +104,83 @@ public class AuthController {
         }
 
     }
-
+    /**
+     * @param signUpRequest
+     * @return HTTPS Status
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        System.err.println("Check from here");
-        System.err.println("Check from here" + signUpRequest);
+        if (null != signUpRequest) {
+            if (!signUpRequest.getFirstName().isEmpty()
+                    && !signUpRequest.getFirstName().contains("NULL")
+                    && signUpRequest.getLastName().isEmpty()
+                    && signUpRequest.getLastName().contains("NULL")) {
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
-        User user = new User(signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getFirstName(),
-                signUpRequest.getLastName());
-
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByRole(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
-                    case "mod":
-                        Role modRole = roleRepository.findByRole(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
+                if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                    return ResponseEntity
+                            .badRequest()
+                            .body(new MessageResponse("Error: Email is already in use!"));
                 }
-            });
-        }
+                User user = new User(signUpRequest.getEmail(),
+                        encoder.encode(signUpRequest.getPassword()),
+                        signUpRequest.getFirstName(),
+                        signUpRequest.getLastName());
 
-        user.setRoles(roles);
-        System.err.println("Check from here" + user);
-        userRepository.save(user);
-        return new ResponseEntity(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
+                Set<String> strRoles = signUpRequest.getRole();
+                Set<Role> roles = new HashSet<>();
+
+                if (strRoles == null) {
+                    Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(userRole);
+                } else {
+                    findRole(strRoles, roles);
+                }
+                user.setRoles(roles);
+                userRepository.save(user);
+                return new ResponseEntity(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity(new MessageResponse("Users first or"
+                        + " last name must not be null"), HttpStatus.BAD_REQUEST);
+
+            }
+
+        } else {
+            return new ResponseEntity(new MessageResponse("User must not be null"), HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    /** 
+    * @param strRoles
+    * @param roles 
+    */    
+    public void findRole(Set<String> strRoles, Set<Role> roles) {
+        strRoles.forEach(role -> {
+            switch (role) {
+                case "admin":
+                    Role adminRole = roleRepository.findByRole(ERole.ROLE_ADMIN)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(adminRole);
+
+                    break;
+                case "mod":
+                    Role modRole = roleRepository.findByRole(ERole.ROLE_MODERATOR)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(modRole);
+
+                    break;
+                default:
+                    Role userRole = roleRepository.findByRole(ERole.ROLE_USER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(userRole);
+            }
+        });
     }
 
+    /**
+     * @param forgotPasswordRequest
+     * @return
+     */
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
         String response = "";

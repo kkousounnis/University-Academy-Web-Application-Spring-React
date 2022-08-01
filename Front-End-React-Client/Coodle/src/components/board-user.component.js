@@ -72,7 +72,7 @@ export default class BoardUser extends Component {
     // console.log("herer"+valuesArray);
     for (var key in valuesArray) {
       if (valuesArray.hasOwnProperty(key)) {
-        console.log(key + " -> " + JSON.stringify(valuesArray[key]));
+        // console.log(key + " -> " + JSON.stringify(valuesArray[key]));
         course.passingGrade = 6.5;
         course = valuesArray[key];
         listOfCourses.push(course)
@@ -111,7 +111,6 @@ export default class BoardUser extends Component {
                       <td> {course.hasAttendedECourses} </td>
                       <td> {course.assignment} </td>
                       <td> {course.isPaid} </td>
-
                     </tr>
                 )
               }
