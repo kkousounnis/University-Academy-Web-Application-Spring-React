@@ -26,7 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     PasswordResetDao passwordDao;
 
     @Autowired
-    UserDao userDao;
+    UserDao userDao;  
+    
 
     static final String success = "Your password has been successfully reset.";
     static final String tokenExpired = "The token is expired.";
@@ -241,6 +242,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void delete(int id) {
 
         userDao.delete(id);
+    }
+    
+    public User findById(int id){
+        return userDao.findById(id);
     }
 
 }

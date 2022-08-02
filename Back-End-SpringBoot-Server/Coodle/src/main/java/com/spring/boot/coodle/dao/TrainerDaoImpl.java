@@ -32,9 +32,9 @@ public class TrainerDaoImpl implements TrainerDao {
         return (trainerRepository.save(trainer));
     }
     
-    public Optional<Trainer> findById(int id){
+    public Trainer findById(int id){
         
-        return (trainerRepository.findById(id));
+        return (trainerRepository.findById(id).orElseThrow());
     }
 
     public void delete(int id) {

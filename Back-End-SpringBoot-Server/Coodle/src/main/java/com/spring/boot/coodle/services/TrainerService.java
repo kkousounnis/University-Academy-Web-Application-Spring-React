@@ -11,7 +11,7 @@ public interface TrainerService {
     
     public TrainerRequest update(int id, TrainerRequest trainerRequest);
     
-    public Optional<Trainer> findById(int id);
+    public Trainer findById(int id);
 
     public void save(TrainerRequest trainer);
  

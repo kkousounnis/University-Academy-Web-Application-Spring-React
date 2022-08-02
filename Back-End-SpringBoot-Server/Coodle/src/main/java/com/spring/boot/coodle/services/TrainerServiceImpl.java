@@ -40,7 +40,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Optional<Trainer> findById(int id) {
+    public Trainer findById(int id) {
 
         return (trainerDao.findById(id));
     }

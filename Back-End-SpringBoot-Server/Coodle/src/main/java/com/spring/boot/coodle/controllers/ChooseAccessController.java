@@ -4,9 +4,11 @@ import com.spring.boot.coodle.entities.Assignment;
 import com.spring.boot.coodle.entities.Course;
 import com.spring.boot.coodle.entities.ERole;
 import com.spring.boot.coodle.entities.Trainer;
+import com.spring.boot.coodle.entities.User;
 import com.spring.boot.coodle.entities.dto.requests.TrainerRequest;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
 import com.spring.boot.coodle.entities.dto.responses.TrainerListResponse;
+import com.spring.boot.coodle.entities.dto.responses.TrainerResponse;
 import com.spring.boot.coodle.entities.dto.responses.UserResponseTable;
 import com.spring.boot.coodle.services.AssignmentServiceImpl;
 import com.spring.boot.coodle.services.CourseServiceImpl;
@@ -14,6 +16,7 @@ import com.spring.boot.coodle.services.TrainerServiceImpl;
 import com.spring.boot.coodle.services.UserDetailsServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -108,9 +111,22 @@ public class ChooseAccessController {
     @GetMapping("/trainer/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> get(@PathVariable int id) {
+        
+        return (new ResponseEntity(setTrainerResponse(id),
+                HttpStatus.OK));
+    }
 
-        return (new ResponseEntity(trainerService.findById(id),
-                HttpStatus.BAD_REQUEST));
+    public TrainerResponse setTrainerResponse(int id) {
+        User user = userService.findById(id);
+        Trainer trainer = trainerService.findById(id);   
+        TrainerResponse trainerResponse = new TrainerResponse();
+        
+        trainerResponse.setId(id);
+        trainerResponse.setEmail(user.getEmail());
+        trainerResponse.setFirstName(user.getFirstName());
+        trainerResponse.setLastName(user.getLastName());
+        trainerResponse.setSubbject(trainer.getSubbject());
+        return (trainerResponse);
     }
 
     @DeleteMapping("/trainer/{id}")
