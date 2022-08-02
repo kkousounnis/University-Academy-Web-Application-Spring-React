@@ -28,7 +28,7 @@ class UserService {
       lastName,
       subject
     },
-    { headers: authHeader()});
+      { headers: authHeader() });
   }
 
   getTrainerListBoard() {
@@ -36,7 +36,7 @@ class UserService {
   }
 
   getTrainerById(trainerId) {
-    return axios.get(API_URL + '/' + trainerId);
+    return axios.get(API_URL + 'trainer/' + trainerId, { headers: authHeader() });
   }
 
   updateTrainer(trainer, trainerId) {

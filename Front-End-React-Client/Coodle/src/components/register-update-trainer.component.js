@@ -129,9 +129,6 @@ export default class RegisterTrainer extends Component {
     this.onChangelastName = this.onChangelastName.bind(this);
     this.onChangeSubject = this.onChangeSubject.bind(this);
 
-    this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
-    this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
-    this.saveOrUpdateTrainer = this.saveOrUpdateTrainer.bind(this);
 
     this.state = {
       id: this.props.match.params.id,
@@ -142,7 +139,8 @@ export default class RegisterTrainer extends Component {
       lastName: "",
       subject: "",
       successful: false,
-      message: ""
+      message: "",
+      appearPasswordField: false
     };
   }
 
@@ -154,46 +152,40 @@ export default class RegisterTrainer extends Component {
       return
 
     } else {
-
-      TrainerService.getTrainerById(this.state.id).then((res) => {
+      
+      userService.getTrainerById(this.state.id).then((res) => {
         let trainer = res.data;
         this.setState({
+          id: trainer.id,
+          email: trainer.email,
           firstName: trainer.firstName,
           lastName: trainer.lastName,
-          emailId: trainer.emailId
+          subject: trainer.subject,
+          
         });
+        this.setState({
+          appearPasswordField:true
+        })
       });
     }
   }
 
-  saveOrUpdateTrainer = (e) => {
-    e.preventDefault();
-    let trainer = { firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId };
-    
+  // saveOrUpdateTrainer = (e) => {
+  //   e.preventDefault();
+  //   let trainer = { firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId };
 
-    // step 5
-    if (this.state.id === '_add') {
-      EmployeeService.createEmployee(employee).then(res => {
-        this.props.history.push('/employees');
-      });
-    } else {
-      EmployeeService.updateEmployee(employee, this.state.id).then(res => {
-        this.props.history.push('/employees');
-      });
-    }
-  }
 
-  changeFirstNameHandler = (event) => {
-    this.setState({ firstName: event.target.value });
-  }
-
-  changeLastNameHandler = (event) => {
-    this.setState({ lastName: event.target.value });
-  }
-
-  changeEmailHandler = (event) => {
-    this.setState({ emailId: event.target.value });
-  }
+  //   // step 5
+  //   if (this.state.id === '_add') {
+  //     EmployeeService.createEmployee(employee).then(res => {
+  //       this.props.history.push('/employees');
+  //     });
+  //   } else {
+  //     EmployeeService.updateEmployee(employee, this.state.id).then(res => {
+  //       this.props.history.push('/employees');
+  //     });
+  //   }
+  // }
 
   onChangeEmail(e) {
     this.setState({
@@ -237,7 +229,8 @@ export default class RegisterTrainer extends Component {
 
     this.setState({
       message: "",
-      successful: false
+      successful: false,
+      appearPasswordField: false
     });
 
     this.form.validateAll();
@@ -290,8 +283,9 @@ export default class RegisterTrainer extends Component {
             }}
           >
             <p className="text-center">Register Trainer</p>
-            {!this.state.successful && (
-              <div>
+            {/* {!this.state.successful && ( */}
+            <div>
+              {!this.state.successful && (
                 <div className="form-group">
                   <label htmlFor="Email">Trainer's Company Email</label>
                   <Input
@@ -304,7 +298,8 @@ export default class RegisterTrainer extends Component {
                     validations={[required, vemail]}
                   />
                 </div>
-
+              )}
+              {!this.state.successful && !this.state.appearPasswordField && (
                 <div className="form-group">
                   <label htmlFor="password">Trainer's Password</label>
                   <Input
@@ -315,9 +310,11 @@ export default class RegisterTrainer extends Component {
                     value={this.state.password}
                     onChange={this.onChangePassword}
                     validations={[required, vpassword]}
+
                   />
                 </div>
-
+              )}
+              {!this.state.successful && !this.state.appearPasswordField && (
                 <div className="form-group">
                   <label htmlFor="password">Confirm Password</label>
                   <Input
@@ -331,47 +328,48 @@ export default class RegisterTrainer extends Component {
                   />
 
                 </div>
+              )}
 
-                <div className="form-group">
-                  <label htmlFor="firstName">Trainer's First Name</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="firstName"
-                    value={this.state.firstName}
-                    onChange={this.onChangefirstName}
-                    validations={[required, vuserfirstName]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="lastName">Trainer's Last Name</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="lastName"
-                    value={this.state.lastName}
-                    onChange={this.onChangelastName}
-                    validations={[required, vuserlastName]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="subject">Trainer's Subject</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    onChange={this.onChangeSubject}
-                    value={this.state.subject}
-                    name="subject"
-                  />
-                </div>
-
-                <div className="form-group mt-4">
-                  <button className="btn btn-primary btn-block mybutton">Sign Up</button>
-                </div>
+              <div className="form-group">
+                <label htmlFor="firstName">Trainer's First Name</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="firstName"
+                  value={this.state.firstName}
+                  onChange={this.onChangefirstName}
+                  validations={[required, vuserfirstName]}
+                />
               </div>
-            )}
+
+              <div className="form-group">
+                <label htmlFor="lastName">Trainer's Last Name</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="lastName"
+                  value={this.state.lastName}
+                  onChange={this.onChangelastName}
+                  validations={[required, vuserlastName]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="subject">Trainer's Subject</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  onChange={this.onChangeSubject}
+                  value={this.state.subject}
+                  name="subject"
+                />
+              </div>
+
+              <div className="form-group mt-4">
+                <button className="btn btn-primary btn-block mybutton">Sign Up</button>
+              </div>
+            </div>
+
 
             {this.state.message && (
               <div className="form-group">
