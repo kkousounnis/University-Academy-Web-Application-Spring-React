@@ -129,16 +129,70 @@ export default class RegisterTrainer extends Component {
     this.onChangelastName = this.onChangelastName.bind(this);
     this.onChangeSubject = this.onChangeSubject.bind(this);
 
+    this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
+    this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
+    this.saveOrUpdateTrainer = this.saveOrUpdateTrainer.bind(this);
+
     this.state = {
+      id: this.props.match.params.id,
       email: "",
       password: "",
       confirmPassword: "",
       firstName: "",
       lastName: "",
-      subject:"",
+      subject: "",
       successful: false,
       message: ""
     };
+  }
+
+  componentDidMount() {
+
+    // step 4
+    if (this.state.id === '_add') {
+
+      return
+
+    } else {
+
+      TrainerService.getTrainerById(this.state.id).then((res) => {
+        let trainer = res.data;
+        this.setState({
+          firstName: trainer.firstName,
+          lastName: trainer.lastName,
+          emailId: trainer.emailId
+        });
+      });
+    }
+  }
+
+  saveOrUpdateTrainer = (e) => {
+    e.preventDefault();
+    let trainer = { firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId };
+    
+
+    // step 5
+    if (this.state.id === '_add') {
+      EmployeeService.createEmployee(employee).then(res => {
+        this.props.history.push('/employees');
+      });
+    } else {
+      EmployeeService.updateEmployee(employee, this.state.id).then(res => {
+        this.props.history.push('/employees');
+      });
+    }
+  }
+
+  changeFirstNameHandler = (event) => {
+    this.setState({ firstName: event.target.value });
+  }
+
+  changeLastNameHandler = (event) => {
+    this.setState({ lastName: event.target.value });
+  }
+
+  changeEmailHandler = (event) => {
+    this.setState({ emailId: event.target.value });
   }
 
   onChangeEmail(e) {

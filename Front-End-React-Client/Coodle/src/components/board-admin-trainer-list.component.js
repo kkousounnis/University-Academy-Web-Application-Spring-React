@@ -46,7 +46,7 @@ export default class boardAdminTrainerList extends Component {
   }
 
   editTrainer(id) {
-    this.props.history.push(`/add-trainer/${id}`);
+    this.props.history.push(`/register-update-trainer/${id}`);
   }
 
 
@@ -81,7 +81,7 @@ export default class boardAdminTrainerList extends Component {
   }
 
   addTrainer() {
-    this.props.history.push('/register-trainer/');
+    this.props.history.push('/register-update-trainer/_add');
   }
 
   render() {
@@ -117,13 +117,13 @@ export default class boardAdminTrainerList extends Component {
             </div>
           </div>
         )}
-  
+
         <h2>List Of Proffessors</h2>
         <button type="button" class="m-3 btn btn-primary mybutton" onClick={this.addTrainer}>
           Add new Trainer
         </button>
-        
-        
+
+
         <header className="jumbotron">
 
           <table class="table table-light">
@@ -138,13 +138,11 @@ export default class boardAdminTrainerList extends Component {
               </tr>
             </thead>
 
-          
             <tbody>
-              {!this.state.successful && 
-                
+              {!this.state.successful &&
+
                 listOfTrainers.map(
                   trainer =>
-                  
                     <tr key={trainer.id}>
                       <td> {trainer.email} </td>
                       <td> {trainer.password} </td>
@@ -152,7 +150,7 @@ export default class boardAdminTrainerList extends Component {
                       <td> {trainer.lastName} </td>
                       <td> {trainer.subject} </td>
                       <td>
-                        <button type="button" class="m-1 btn btn-warning" /*onClick={() => this.editTrainer(trainer.id)}*/>Edit</button>
+                        <button type="button" class="m-1 btn btn-warning" onClick={() => this.editTrainer(trainer.id)}>Edit</button>
                         <button type="button" class="btn btn-danger" onClick={() => this.deleteTrainer(trainer.id)}>Delete</button>
                       </td>
                     </tr>
@@ -162,7 +160,7 @@ export default class boardAdminTrainerList extends Component {
           </table>
         </header>
       </div>
-      
+
     );
   }
 }

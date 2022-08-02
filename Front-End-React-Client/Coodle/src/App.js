@@ -9,7 +9,7 @@ import Login from "./components/login.component";
 import ResetPassword from "./components/reset-password.component";
 import ForgotPassword from "./components/forgot-password.component";
 import Register from "./components/register.component";
-import RegisterTrainer from "./components/register-trainer.component";
+import RegisterUpdateTrainer from "./components/register-update-trainer.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
@@ -17,7 +17,7 @@ import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
 import ListTrainerComponent from "./components/board-admin-trainer-list.component";
-import CreateTrainerComponent from "./components/board-admin-trainer-list.component";
+
 
 import CoodleIcon from "./assets/coodle_Logo.png";
 
@@ -182,8 +182,7 @@ class App extends Component {
             <Route path="/adminTrainers" component={boardAdminTrainerList} />
             <Route path="/" exact component={ListTrainerComponent}></Route>
             <Route path="/trainer" component={ListTrainerComponent}></Route>
-            <Route path="/register-trainer" component={RegisterTrainer}></Route>
-            <Route path="/add-trainer/:id" component={CreateTrainerComponent}></Route>
+            <Route path="/register-update-trainer/:id" component={RegisterUpdateTrainer}></Route>
             {!currentUser ?
               (<Route exact path="/" component={Home} />) :
               (<div class="container row p-5" >
