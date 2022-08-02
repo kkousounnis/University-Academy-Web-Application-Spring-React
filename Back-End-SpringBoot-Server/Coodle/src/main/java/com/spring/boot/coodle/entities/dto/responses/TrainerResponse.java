@@ -17,6 +17,6 @@ public class TrainerResponse {
     
     private String lastName;
     
-    private String subbject;
+    private String subject;
     
 }

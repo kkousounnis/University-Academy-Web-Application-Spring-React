@@ -125,7 +125,7 @@ public class ChooseAccessController {
         trainerResponse.setEmail(user.getEmail());
         trainerResponse.setFirstName(user.getFirstName());
         trainerResponse.setLastName(user.getLastName());
-        trainerResponse.setSubbject(trainer.getSubbject());
+        trainerResponse.setSubject(trainer.getSubbject());
         return (trainerResponse);
     }
 
