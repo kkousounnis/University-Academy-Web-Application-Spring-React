@@ -137,6 +137,7 @@ public class ChooseAccessController {
     @PutMapping("/trainer/{id}")
     public ResponseEntity<?> update(@PathVariable int id,
             @RequestBody TrainerRequest trainerRequest) {
+        trainerRequest.setPassword(encoder.encode(trainerRequest.getPassword()));
         trainerService.update(id, trainerRequest);
         return (new ResponseEntity(new MessageResponse(trainerUpdated),
                 HttpStatus.OK));

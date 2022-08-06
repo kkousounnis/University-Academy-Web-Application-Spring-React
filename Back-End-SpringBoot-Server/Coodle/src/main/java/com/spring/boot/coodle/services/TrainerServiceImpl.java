@@ -43,6 +43,7 @@ public class TrainerServiceImpl implements TrainerService {
     public User setUser(int id, TrainerRequest trainerRequest) {
         User user = new User();
         user.setId(id);
+        user.setPassword(trainerRequest.getPassword());
         user.setEmail(trainerRequest.getEmail());
         user.setFirstName(trainerRequest.getFirstName());
         user.setLastName(trainerRequest.getLastName());
