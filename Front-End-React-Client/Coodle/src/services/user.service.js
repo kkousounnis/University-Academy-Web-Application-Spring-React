@@ -31,16 +31,23 @@ class UserService {
       { headers: authHeader() });
   }
 
+  updateTrainer(email, password, firstName, lastName, subject, trainerId) {
+    return axios.put(API_URL + "trainer/" + trainerId, {
+      email,
+      password,
+      firstName,
+      lastName,
+      subject
+    },
+      { headers: authHeader() });
+  }
+
   getTrainerListBoard() {
     return axios.get(API_URL + 'trainers-list', { headers: authHeader() });
   }
 
   getTrainerById(trainerId) {
     return axios.get(API_URL + 'trainer/' + trainerId, { headers: authHeader() });
-  }
-
-  updateTrainer(trainer, trainerId) {
-    return axios.put(API_URL + '/' + trainerId, trainer);
   }
 
   deleteTrainer(trainerId) {

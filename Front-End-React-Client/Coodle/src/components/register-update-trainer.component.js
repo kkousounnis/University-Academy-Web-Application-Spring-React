@@ -152,7 +152,7 @@ export default class RegisterTrainer extends Component {
       return
 
     } else {
-      
+
       userService.getTrainerById(this.state.id).then((res) => {
         let trainer = res.data;
         this.setState({
@@ -161,10 +161,10 @@ export default class RegisterTrainer extends Component {
           firstName: trainer.firstName,
           lastName: trainer.lastName,
           subject: trainer.subject,
-          
+
         });
         this.setState({
-          appearPasswordField:true
+          appearPasswordField: true
         })
       });
     }
@@ -232,37 +232,69 @@ export default class RegisterTrainer extends Component {
       successful: false,
       appearPasswordField: false
     });
-
+    
     this.form.validateAll();
-
+    
     if (this.checkBtn.context._errors.length === 0) {
-      userService.registerTrainer(
-        this.state.email,
-        this.state.password,
-        this.state.firstName,
-        this.state.lastName,
-        this.state.subject
-      ).then(
-        response => {
-          this.setState({
-            message: response.data.message,
-            successful: true
-          });
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+      
+      if (this.state.id === '_add') {
+        userService.registerTrainer(
+          this.state.email,
+          this.state.password,
+          this.state.firstName,
+          this.state.lastName,
+          this.state.subject
+        ).then(
+          response => {
+            this.setState({
+              message: response.data.message,
+              successful: true
+            });
+          },
+          error => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
 
-          this.setState({
-            successful: false,
-            message: resMessage
-          });
-        }
-      );
+            this.setState({
+              successful: false,
+              message: resMessage
+            });
+          }
+        );
+      } else {
+        userService.updateTrainer(          
+          this.state.email,
+          this.state.password,
+          this.state.firstName,
+          this.state.lastName,
+          this.state.subject,
+          this.state.id
+        ).then(
+          response => {
+            this.setState({
+              message: response.data.message,
+              successful: true
+            });
+          },
+          error => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+
+            this.setState({
+              successful: false,
+              message: resMessage
+            });
+          }
+        );
+      }
     }
   }
 
@@ -282,7 +314,12 @@ export default class RegisterTrainer extends Component {
               this.form = c;
             }}
           >
-            <p className="text-center">Register Trainer</p>
+            {!this.state.appearPasswordField ? (
+              <p className="text-center">Register Trainer</p>
+            ) : (
+              <p className="text-center">Update Trainer</p>
+            )}
+
             {/* {!this.state.successful && ( */}
             <div>
               {!this.state.successful && (
@@ -299,7 +336,7 @@ export default class RegisterTrainer extends Component {
                   />
                 </div>
               )}
-              {!this.state.successful && !this.state.appearPasswordField && (
+              {!this.state.successful &&(
                 <div className="form-group">
                   <label htmlFor="password">Trainer's Password</label>
                   <Input
@@ -314,7 +351,7 @@ export default class RegisterTrainer extends Component {
                   />
                 </div>
               )}
-              {!this.state.successful && !this.state.appearPasswordField && (
+              {!this.state.successful &&(
                 <div className="form-group">
                   <label htmlFor="password">Confirm Password</label>
                   <Input
@@ -364,10 +401,15 @@ export default class RegisterTrainer extends Component {
                   name="subject"
                 />
               </div>
-
-              <div className="form-group mt-4">
-                <button className="btn btn-primary btn-block mybutton">Sign Up</button>
-              </div>
+              {this.state.appearPasswordField ? (
+                <div className="form-group mt-4">
+                  <button className="btn btn-primary btn-block mybutton">Update</button>
+                </div>
+              ) : (
+                <div className="form-group mt-4">
+                  <button className="btn btn-primary btn-block mybutton">Sign up</button>
+                </div>
+              )}
             </div>
 
 
