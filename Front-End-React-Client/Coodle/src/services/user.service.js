@@ -28,7 +28,18 @@ class UserService {
       lastName,
       subject
     },
-    { headers: authHeader()});
+      { headers: authHeader() });
+  }
+
+  updateTrainer(email, password, firstName, lastName, subject, trainerId) {
+    return axios.put(API_URL + "trainer/" + trainerId, {
+      email,
+      password,
+      firstName,
+      lastName,
+      subject
+    },
+      { headers: authHeader() });
   }
 
   getTrainerListBoard() {
@@ -36,11 +47,7 @@ class UserService {
   }
 
   getTrainerById(trainerId) {
-    return axios.get(API_URL + '/' + trainerId);
-  }
-
-  updateTrainer(trainer, trainerId) {
-    return axios.put(API_URL + '/' + trainerId, trainer);
+    return axios.get(API_URL + 'trainer/' + trainerId, { headers: authHeader() });
   }
 
   deleteTrainer(trainerId) {

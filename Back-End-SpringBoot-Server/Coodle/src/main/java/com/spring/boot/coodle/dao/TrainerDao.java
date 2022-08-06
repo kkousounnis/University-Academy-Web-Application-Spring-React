@@ -12,7 +12,7 @@ public interface TrainerDao {
 
     public Trainer update(int id, Trainer trainer);
     
-    public Optional<Trainer> findById(int id);
+    public Trainer findById(int id);
 
     public void delete(int id);
 

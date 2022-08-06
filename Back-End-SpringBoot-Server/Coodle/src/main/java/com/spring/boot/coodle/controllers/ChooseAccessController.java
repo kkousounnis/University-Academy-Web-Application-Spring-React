@@ -2,11 +2,12 @@ package com.spring.boot.coodle.controllers;
 
 import com.spring.boot.coodle.entities.Assignment;
 import com.spring.boot.coodle.entities.Course;
-import com.spring.boot.coodle.entities.ERole;
 import com.spring.boot.coodle.entities.Trainer;
+import com.spring.boot.coodle.entities.User;
 import com.spring.boot.coodle.entities.dto.requests.TrainerRequest;
 import com.spring.boot.coodle.entities.dto.responses.MessageResponse;
 import com.spring.boot.coodle.entities.dto.responses.TrainerListResponse;
+import com.spring.boot.coodle.entities.dto.responses.TrainerResponse;
 import com.spring.boot.coodle.entities.dto.responses.UserResponseTable;
 import com.spring.boot.coodle.services.AssignmentServiceImpl;
 import com.spring.boot.coodle.services.CourseServiceImpl;
@@ -14,7 +15,6 @@ import com.spring.boot.coodle.services.TrainerServiceImpl;
 import com.spring.boot.coodle.services.UserDetailsServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +37,7 @@ public class ChooseAccessController {
 
     private static final String nullMessage = "Null values are not allowed.";
     private static final String trainerSaved = "Trainer saved with success.";
+    private static final String trainerUpdated = "Trainer updated with success.";
     private static final String deletedMessage = "Trainer deleted with success.";
 
     @Autowired
@@ -107,25 +108,39 @@ public class ChooseAccessController {
 
     @GetMapping("/trainer/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> get(@PathVariable int id) {
+    public ResponseEntity<?> getTrainerById(@PathVariable int id) {
 
-        return (new ResponseEntity(trainerService.findById(id),
-                HttpStatus.BAD_REQUEST));
+        return (new ResponseEntity(setTrainerResponse(id),
+                HttpStatus.OK));
+    }
+
+    public TrainerResponse setTrainerResponse(int id) {
+        User user = userService.findById(id);
+        Trainer trainer = trainerService.findById(id);
+        TrainerResponse trainerResponse = new TrainerResponse();
+
+        trainerResponse.setId(id);
+        trainerResponse.setEmail(user.getEmail());
+        trainerResponse.setFirstName(user.getFirstName());
+        trainerResponse.setLastName(user.getLastName());
+        trainerResponse.setSubject(trainer.getSubbject());
+        return (trainerResponse);
     }
 
     @DeleteMapping("/trainer/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
-        System.err.println("Id" + id);
         userService.delete(id);
         return (new ResponseEntity(new MessageResponse(deletedMessage),
                 HttpStatus.OK));
     }
 
-    @PutMapping("/trainer")
-    public ResponseEntity<?> update(@RequestBody TrainerRequest trainerRequest) {
-        trainerService.update(1, trainerRequest);
-        return (new ResponseEntity(new MessageResponse(nullMessage),
-                HttpStatus.BAD_REQUEST));
+    @PutMapping("/trainer/{id}")
+    public ResponseEntity<?> update(@PathVariable int id,
+            @RequestBody TrainerRequest trainerRequest) {
+        trainerRequest.setPassword(encoder.encode(trainerRequest.getPassword()));
+        trainerService.update(id, trainerRequest);
+        return (new ResponseEntity(new MessageResponse(trainerUpdated),
+                HttpStatus.OK));
     }
 
 }

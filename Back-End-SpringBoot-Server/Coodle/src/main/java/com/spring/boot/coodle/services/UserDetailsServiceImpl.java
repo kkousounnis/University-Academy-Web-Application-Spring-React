@@ -6,6 +6,7 @@ import com.spring.boot.coodle.entities.PasswordResetToken;
 import static com.spring.boot.coodle.entities.PasswordResetToken.EXPIRATION;
 import com.spring.boot.coodle.entities.Trainer;
 import com.spring.boot.coodle.entities.User;
+import com.spring.boot.coodle.entities.dto.requests.TrainerRequest;
 import com.spring.boot.coodle.entities.dto.responses.TrainerListResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -237,10 +238,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<User> findAllUsers() {
         return (userDao.findAllUsers());
     }
-    
+
     public void delete(int id) {
 
         userDao.delete(id);
     }
+
+    public User findById(int id) {
+        return userDao.findById(id);
+    }
+
+   
 
 }

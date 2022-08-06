@@ -129,17 +129,63 @@ export default class RegisterTrainer extends Component {
     this.onChangelastName = this.onChangelastName.bind(this);
     this.onChangeSubject = this.onChangeSubject.bind(this);
 
+
     this.state = {
+      id: this.props.match.params.id,
       email: "",
       password: "",
       confirmPassword: "",
       firstName: "",
       lastName: "",
-      subject:"",
+      subject: "",
       successful: false,
-      message: ""
+      message: "",
+      appearPasswordField: false
     };
   }
+
+  componentDidMount() {
+
+    // step 4
+    if (this.state.id === '_add') {
+
+      return
+
+    } else {
+
+      userService.getTrainerById(this.state.id).then((res) => {
+        let trainer = res.data;
+        this.setState({
+          id: trainer.id,
+          email: trainer.email,
+          firstName: trainer.firstName,
+          lastName: trainer.lastName,
+          subject: trainer.subject,
+
+        });
+        this.setState({
+          appearPasswordField: true
+        })
+      });
+    }
+  }
+
+  // saveOrUpdateTrainer = (e) => {
+  //   e.preventDefault();
+  //   let trainer = { firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId };
+
+
+  //   // step 5
+  //   if (this.state.id === '_add') {
+  //     EmployeeService.createEmployee(employee).then(res => {
+  //       this.props.history.push('/employees');
+  //     });
+  //   } else {
+  //     EmployeeService.updateEmployee(employee, this.state.id).then(res => {
+  //       this.props.history.push('/employees');
+  //     });
+  //   }
+  // }
 
   onChangeEmail(e) {
     this.setState({
@@ -183,39 +229,72 @@ export default class RegisterTrainer extends Component {
 
     this.setState({
       message: "",
-      successful: false
+      successful: false,
+      appearPasswordField: false
     });
-
+    
     this.form.validateAll();
-
+    
     if (this.checkBtn.context._errors.length === 0) {
-      userService.registerTrainer(
-        this.state.email,
-        this.state.password,
-        this.state.firstName,
-        this.state.lastName,
-        this.state.subject
-      ).then(
-        response => {
-          this.setState({
-            message: response.data.message,
-            successful: true
-          });
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+      
+      if (this.state.id === '_add') {
+        userService.registerTrainer(
+          this.state.email,
+          this.state.password,
+          this.state.firstName,
+          this.state.lastName,
+          this.state.subject
+        ).then(
+          response => {
+            this.setState({
+              message: response.data.message,
+              successful: true
+            });
+          },
+          error => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
 
-          this.setState({
-            successful: false,
-            message: resMessage
-          });
-        }
-      );
+            this.setState({
+              successful: false,
+              message: resMessage
+            });
+          }
+        );
+      } else {
+        userService.updateTrainer(          
+          this.state.email,
+          this.state.password,
+          this.state.firstName,
+          this.state.lastName,
+          this.state.subject,
+          this.state.id
+        ).then(
+          response => {
+            this.setState({
+              message: response.data.message,
+              successful: true
+            });
+          },
+          error => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+
+            this.setState({
+              successful: false,
+              message: resMessage
+            });
+          }
+        );
+      }
     }
   }
 
@@ -235,9 +314,15 @@ export default class RegisterTrainer extends Component {
               this.form = c;
             }}
           >
-            <p className="text-center">Register Trainer</p>
-            {!this.state.successful && (
-              <div>
+            {!this.state.appearPasswordField ? (
+              <p className="text-center">Register Trainer</p>
+            ) : (
+              <p className="text-center">Update Trainer</p>
+            )}
+
+            {/* {!this.state.successful && ( */}
+            <div>
+              {!this.state.successful && (
                 <div className="form-group">
                   <label htmlFor="Email">Trainer's Company Email</label>
                   <Input
@@ -250,7 +335,8 @@ export default class RegisterTrainer extends Component {
                     validations={[required, vemail]}
                   />
                 </div>
-
+              )}
+              {!this.state.successful &&(
                 <div className="form-group">
                   <label htmlFor="password">Trainer's Password</label>
                   <Input
@@ -261,9 +347,11 @@ export default class RegisterTrainer extends Component {
                     value={this.state.password}
                     onChange={this.onChangePassword}
                     validations={[required, vpassword]}
+
                   />
                 </div>
-
+              )}
+              {!this.state.successful &&(
                 <div className="form-group">
                   <label htmlFor="password">Confirm Password</label>
                   <Input
@@ -277,47 +365,53 @@ export default class RegisterTrainer extends Component {
                   />
 
                 </div>
+              )}
 
-                <div className="form-group">
-                  <label htmlFor="firstName">Trainer's First Name</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="firstName"
-                    value={this.state.firstName}
-                    onChange={this.onChangefirstName}
-                    validations={[required, vuserfirstName]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="lastName">Trainer's Last Name</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="lastName"
-                    value={this.state.lastName}
-                    onChange={this.onChangelastName}
-                    validations={[required, vuserlastName]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="subject">Trainer's Subject</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    onChange={this.onChangeSubject}
-                    value={this.state.subject}
-                    name="subject"
-                  />
-                </div>
-
-                <div className="form-group mt-4">
-                  <button className="btn btn-primary btn-block mybutton">Sign Up</button>
-                </div>
+              <div className="form-group">
+                <label htmlFor="firstName">Trainer's First Name</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="firstName"
+                  value={this.state.firstName}
+                  onChange={this.onChangefirstName}
+                  validations={[required, vuserfirstName]}
+                />
               </div>
-            )}
+
+              <div className="form-group">
+                <label htmlFor="lastName">Trainer's Last Name</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="lastName"
+                  value={this.state.lastName}
+                  onChange={this.onChangelastName}
+                  validations={[required, vuserlastName]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="subject">Trainer's Subject</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  onChange={this.onChangeSubject}
+                  value={this.state.subject}
+                  name="subject"
+                />
+              </div>
+              {this.state.appearPasswordField ? (
+                <div className="form-group mt-4">
+                  <button className="btn btn-primary btn-block mybutton">Update</button>
+                </div>
+              ) : (
+                <div className="form-group mt-4">
+                  <button className="btn btn-primary btn-block mybutton">Sign up</button>
+                </div>
+              )}
+            </div>
+
 
             {this.state.message && (
               <div className="form-group">

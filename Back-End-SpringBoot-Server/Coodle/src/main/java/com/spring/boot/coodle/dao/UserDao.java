@@ -17,5 +17,7 @@ public interface UserDao {
 
     public User update(int id, User user);
     
+    public User updateUserTrainer(User user);
+    
     public boolean existsByEmail(String email);
 }
