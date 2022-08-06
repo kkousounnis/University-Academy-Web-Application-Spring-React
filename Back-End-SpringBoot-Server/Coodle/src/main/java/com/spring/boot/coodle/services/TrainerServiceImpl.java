@@ -10,7 +10,6 @@ import com.spring.boot.coodle.entities.dto.requests.TrainerRequest;
 import com.spring.boot.coodle.repository.RoleRepository;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,9 +33,30 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public TrainerRequest update(int id, TrainerRequest trainerRequest) {
+    public void update(int id, TrainerRequest trainerRequest) {
+        
 
-        return (null);
+        trainerDao.update(id, setTrainer(id, trainerRequest, setUser(id, trainerRequest)));
+        userDao.updateUserTrainer(setUser(id, trainerRequest));
+    }
+    
+    public User setUser(int id, TrainerRequest trainerRequest) {
+        User user = new User();
+        user.setId(id);
+        user.setEmail(trainerRequest.getEmail());
+        user.setFirstName(trainerRequest.getFirstName());
+        user.setLastName(trainerRequest.getLastName());
+        System.err.println("Check set user"+ user);
+        return user;
+    }
+
+    public Trainer setTrainer(int id, TrainerRequest trainerRequest, User user) {
+        
+        Trainer trainer = new Trainer();
+        trainer.setId(id);
+        trainer.setSubbject(trainerRequest.getSubject());
+        trainer.setUser(user);
+        return trainer;
     }
 
     @Override
