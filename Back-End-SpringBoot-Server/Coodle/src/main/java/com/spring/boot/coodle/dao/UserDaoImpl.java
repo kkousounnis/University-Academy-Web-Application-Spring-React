@@ -45,12 +45,24 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(int id, User user) {
-
+        
         User myUser = userRepository.findById(id).get();
         //Update user with the new password.
         myUser.setPassword(user.getPassword());
         return userRepository.save(myUser);
     }
+    
+    @Override
+    public User updateUserTrainer(User user) {
+        User myUser = userRepository.findById(user.getId()).get();
+        System.err.println("What happens when saving the user"+ user);
+        myUser.setEmail(user.getEmail());
+        myUser.setFirstName(user.getFirstName());
+        myUser.setLastName(user.getLastName());
+       
+        return userRepository.save(myUser);
+    }   
+    
 
     @Override
     public boolean existsByEmail(String username) {
