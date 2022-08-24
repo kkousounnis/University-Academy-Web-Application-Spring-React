@@ -31,6 +31,7 @@
   
   
   
+  
 #### Technologies:Rest Api, JPA/HIBERNATE ORM, JWT (JSON Web Token)
 #### IDE Used NetBeans, IntelliJ IDEA
 
