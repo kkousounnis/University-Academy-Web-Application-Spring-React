@@ -58,7 +58,6 @@ Courses:
 
 7)User can pay for the master whenever he wants
 
-
 Reset Password Feature
 ![image](https://user-images.githubusercontent.com/39504405/166916877-9d27161a-fa3c-4ef8-80bf-a6c3bb2b1c98.png)
 
