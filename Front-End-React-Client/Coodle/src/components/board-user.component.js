@@ -54,7 +54,9 @@ export default class BoardUser extends Component {
 
 
 
-
+  payMaster(id) {
+    this.props.history.push(`/register-update-trainer/${id}`);
+  }
   render() {
 
     let course = {
@@ -95,7 +97,7 @@ export default class BoardUser extends Component {
                 <th scope="col">Assignment Status</th>
                 <th scope="col">Assignment Summary</th>
                 <th scope="col">Assignment Deadline date</th>
-                <th scope="col">To be implemented Pay the lesson</th>
+                <th scope="col">Pay the lesson</th>
               </tr>
             </thead>
             <tbody>
@@ -111,6 +113,9 @@ export default class BoardUser extends Component {
                       <td> {course.hasAttendedECourses} </td>
                       <td> {course.assignment} </td>
                       <td> {course.isPaid} </td>
+                      <td>
+                        <button type="button" class="m-1 btn btn-warning" onClick={() => this.payMaster(trainer.id)}>Pay</button>
+                      </td>
                     </tr>
                 )
               }
