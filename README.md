@@ -33,6 +33,7 @@ Functionalities that needs to be implemented.
 1)Dashboards with all the 4 courses  and his assignment which every course has only one assignment and belongs to a semester one year in total like a master   2 semesters and a Master thesis.
 Courses:
 
+
  a. Algorithms 1 assignment (Implement Quick Sort Algorithm.)
  
  b. Analysis 1 assignment (Implement 20 math problems from book.)
