@@ -1,4 +1,3 @@
-
 # Coodle Univeristy Academy 
 
 ### A Business to Customer (B2C) Web Application University portal with Spcesialization In Computer Science which enrollerd students will use for their courses.
