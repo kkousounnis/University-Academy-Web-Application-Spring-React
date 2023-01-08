@@ -1,3 +1,6 @@
 1)git stash
 
+For untracked files
+git stash --include-untracked or git stash --all which stashes all files, including untracked and ignored files
+
 2)git stash apply
