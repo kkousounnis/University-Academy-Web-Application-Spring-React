@@ -24,7 +24,6 @@
 #### Technologies:Rest Api, JPA/HIBERNATE ORM, JWT (JSON Web Token)
 #### IDE Used NetBeans, IntelliJ IDEA
 
-
 The Web Application needs to hold in a database multiple courses along with the enrolled students, the trainers that teach the subjects and the assignments that the students need to submit during the course duration.
 
 Functionalities that needs to be implemented.
